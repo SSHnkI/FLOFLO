@@ -1,0 +1,896 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Praias de água azul, roda de samba, drinks, comida e centrinhos pra curtir Florianópolis a partir dos Ingleses.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Floripa pelos Ingleses">
+<meta property="og:description" content="Mapa da ilha com praias de água azul, samba, drinks, comida e roteiros prontos.">
+<meta property="og:image" content="https://sshnki.github.io/FLOFLO/img/campeche.jpg">
+<meta property="og:url" content="https://sshnki.github.io/FLOFLO/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='13' r='7' fill='%23FFC23D'/%3E%3Cpath d='M2 24c4 0 4-3 7-3s3 3 7 3 4-3 7-3 3 3 7 3' fill='none' stroke='%230B7F8C' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<!-- artifact -->
+<title>Floripa pelos Ingleses</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: foto de praia no topo, faixa de destaques sobreposta, plataforma mapa + lista (lado a lado no desktop), agenda, roteiros e dicas em baloes.
+   Tema unico claro de proposito: "dia de praia". */
+:root {
+  --sky: #EAF5F4; --surface: #FFFFFF; --sand: #F3E6C8; --sand-line: #DEC897;
+  --ink: #0A2A35; --muted: #4A6872; --line: #D2E5E4;
+  --sea: #086C77; --sea-soft: #D3EFEE; --deep: #0D4F6B; --sun: #FFC23D; --sun-ink: #5C3F00;
+  --display: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+  --body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --r-lg: 22px; --r-md: 14px; --r-sm: 10px;
+  --shadow: 0 14px 34px -16px rgba(13, 79, 107, .45);
+  --z-pin: 2; --z-balloon: 4; --z-bar: 6;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { background: var(--sky); }
+body { margin: 0; background: var(--sky); color: var(--ink); font: 16px/1.55 var(--body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--sky); }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; border-radius: 6px; }
+h1, h2, h3 { font-family: var(--display); margin: 0; text-wrap: balance; }
+button { font: inherit; color: inherit; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.t { font-family: var(--mono); font-size: .8em; color: var(--sea); white-space: nowrap; }
+
+/* barra do topo */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: var(--z-bar); background: rgba(234, 245, 244, .9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.top-in { display: flex; align-items: center; gap: 16px; padding-block: 10px; }
+.brand { display: flex; align-items: center; gap: 8px; font: 800 1.02rem var(--display); color: var(--ink); text-decoration: none; white-space: nowrap; }
+.sun { width: 14px; height: 14px; border-radius: 50%; background: var(--sun); box-shadow: 0 0 0 4px rgba(255, 194, 61, .3); }
+.top nav { display: flex; gap: 2px; margin-left: auto; overflow-x: auto; scrollbar-width: none; }
+.top nav a { padding: 6px 11px; border-radius: 999px; color: var(--ink); text-decoration: none; font-weight: 600; font-size: .9rem; }
+.top nav a:hover { background: var(--sea-soft); color: var(--sea); }
+
+/* hero */
+.hero { position: relative; color: #fff; background: linear-gradient(180deg, rgba(6, 40, 52, .1) 0%, rgba(6, 40, 52, .5) 50%, rgba(6, 40, 52, .88) 100%), url(img/campeche.jpg) center 45% / cover, var(--deep); }
+.hero-in { padding-block: clamp(64px, 12vw, 120px) 104px; display: grid; gap: 14px; }
+.eyebrow { margin: 0; font: 500 .78rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--sun); }
+h1 { font-size: clamp(2.7rem, 9vw, 5.6rem); font-weight: 800; line-height: .95; letter-spacing: -.025em; text-shadow: 0 2px 24px rgba(6, 40, 52, .4); }
+.lede { margin: 0; max-width: 46ch; font-size: clamp(1.05rem, 2vw, 1.25rem); color: rgba(255, 255, 255, .92); }
+.facts { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.facts li { padding: 6px 12px; border-radius: 999px; background: rgba(255, 255, 255, .14); border: 1px solid rgba(255, 255, 255, .3); backdrop-filter: blur(6px); font-size: .9rem; }
+.facts b { color: var(--sun); font-weight: 700; margin-right: 4px; }
+.hero-credit { position: absolute; right: 12px; bottom: 74px; font-size: .75rem; color: #fff; text-shadow: 0 1px 4px rgba(6, 40, 52, .8); }
+
+/* destaques */
+.picks { position: relative; margin-top: -64px; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(190px, 220px); gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; scrollbar-width: thin; }
+.pick { scroll-snap-align: start; position: relative; height: 250px; border: 0; padding: 0; border-radius: var(--r-lg); overflow: hidden; cursor: pointer; text-align: left; color: #fff; background: var(--deep); box-shadow: var(--shadow); transition: transform .2s ease; }
+.pick img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.pick::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(6, 40, 52, .9) 100%); }
+.pick span { position: absolute; z-index: 1; left: 14px; right: 14px; bottom: 14px; display: grid; gap: 2px; }
+.pick small { font: 500 .75rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--sun); }
+.pick strong { font: 800 1.2rem/1.1 var(--display); }
+.pick:hover img { transform: scale(1.05); }
+.pick:active { transform: scale(.98); }
+
+main { display: grid; gap: 64px; padding-block: 36px 64px; }
+main > *, .platform > * { min-width: 0; }
+section { scroll-margin-top: 70px; }
+.sec-head { display: grid; gap: 4px; margin-bottom: 16px; }
+h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -.015em; }
+.intro { margin: 0; color: var(--muted); max-width: 62ch; }
+
+/* plataforma */
+.platform { display: grid; gap: 20px; align-items: start; }
+@media (min-width: 980px) {
+  .platform { grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); gap: 28px; }
+  .map-col { position: sticky; top: 66px; }
+  .stage { --maxh: 76vh; }
+}
+.map-card { background: var(--surface); border-radius: var(--r-lg); padding: 12px; box-shadow: var(--shadow); }
+.map-tools { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.seg { display: inline-flex; background: var(--sea-soft); border-radius: 999px; padding: 3px; }
+.seg button { border: 0; background: none; padding: 6px 14px; border-radius: 999px; font-weight: 600; font-size: .88rem; color: var(--sea); cursor: pointer; transition: background .2s; }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 4px rgba(13, 79, 107, .25); }
+.hint { font-size: .82rem; color: var(--muted); }
+.map-frame { position: relative; margin-top: 10px; }
+.ocean { border-radius: var(--r-md); overflow: hidden; display: grid; place-items: center;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='22'%3E%3Cpath d='M0 11c8 0 8-5 16-5s8 5 16 5 8-5 16-5 8 5 16 5' fill='none' stroke='%23fff' stroke-opacity='.16' stroke-width='1.4'/%3E%3C/svg%3E"),
+    radial-gradient(130% 90% at 75% 15%, #4FCBD3 0%, #1E9FB2 45%, #0E6D8A 100%); }
+.stage { --maxh: 68vh; position: relative; aspect-ratio: var(--vw) / var(--vh); width: min(100%, calc(var(--maxh) * var(--vw) / var(--vh))); }
+.stage svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.foam { fill: none; stroke: rgba(255, 255, 255, .55); stroke-width: 8; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.land { fill: var(--sand); stroke: var(--sand-line); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.lagoon { fill: #63CAD2; stroke: var(--sand-line); stroke-width: 1; vector-effect: non-scaling-stroke; }
+#pins { position: absolute; inset: 0; }
+.pin { position: absolute; z-index: var(--z-pin); transform: translate(-50%, -15px); display: flex; flex-direction: column; align-items: center; gap: 3px; border: 0; padding: 0; background: none; cursor: pointer; }
+.pin b { min-width: 30px; height: 30px; padding: 0 7px; border-radius: 999px; display: grid; place-items: center; background: var(--surface); color: var(--sea); border: 2px solid var(--sea); font-size: .85rem; font-weight: 700; box-shadow: 0 5px 12px -3px rgba(6, 40, 52, .5); transition: transform .15s ease; }
+.pin span { font-size: .75rem; font-weight: 600; white-space: nowrap; color: var(--ink); background: rgba(255, 255, 255, .88); padding: 1px 6px; border-radius: 6px; }
+.pin.side { flex-direction: row; transform: translate(-15px, -15px); }
+.pin:hover b { transform: scale(1.12); }
+.pin[aria-expanded="true"] b { background: var(--sea); color: #fff; }
+.pin.home b { background: var(--sun); border-color: #fff; color: var(--sun-ink); }
+.pin.zone b { background: var(--deep); border-color: #fff; color: #fff; }
+.olabel { position: absolute; transform: translate(-50%, -50%); pointer-events: none; font: italic 600 .78rem var(--display); letter-spacing: .06em; color: #fff; text-shadow: 0 1px 4px rgba(6, 40, 52, .7); text-align: center; line-height: 1.15; }
+.offmap { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; font-size: .8rem; color: var(--muted); }
+.offmap:empty { display: none; }
+.bomb { border: 0; border-radius: 999px; padding: 5px 11px; background: var(--sky); color: var(--deep); font-size: .8rem; font-weight: 600; cursor: pointer; }
+.bomb[aria-expanded="true"] { background: var(--sea); color: #fff; }
+@media (max-width: 520px) { .olabel { display: none; } }
+
+/* balao do mapa */
+.balloon { position: absolute; z-index: var(--z-balloon); width: min(290px, calc(100% - 16px)); background: var(--surface); border-radius: var(--r-md); box-shadow: 0 20px 44px -14px rgba(6, 40, 52, .55); }
+.balloon::after { content: ""; position: absolute; left: var(--tx, 50%); width: 14px; height: 14px; background: var(--surface); transform: translateX(-50%) rotate(45deg); }
+.balloon.down::after { top: -6px; }
+.balloon.up::after { bottom: -6px; }
+@media (prefers-reduced-motion: no-preference) { .balloon { animation: pop .18s ease-out; } }
+@keyframes pop { from { opacity: 0; transform: scale(.96); } }
+.bl-head { display: flex; align-items: center; gap: 10px; padding: 10px 10px 6px; }
+.bl-head img { width: 52px; height: 52px; border-radius: var(--r-sm); object-fit: cover; flex: none; }
+.bl-head div { display: grid; min-width: 0; }
+.bl-head strong { font: 700 1.05rem/1.2 var(--display); }
+.bl-x { margin-left: auto; align-self: start; width: 30px; height: 30px; flex: none; border: 0; border-radius: 50%; background: var(--sky); cursor: pointer; font-size: 1.1rem; line-height: 1; }
+.balloon ul { list-style: none; margin: 0; padding: 0 6px 8px; max-height: 250px; overflow: auto; }
+.balloon li button { display: flex; align-items: center; gap: 9px; width: 100%; padding: 7px 8px; border: 0; border-radius: 8px; background: none; text-align: left; font-weight: 500; font-size: .93rem; cursor: pointer; }
+.balloon li button:hover { background: var(--sky); }
+.balloon li i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); flex: none; }
+.balloon li small { margin-left: auto; font-size: .75rem; color: var(--muted); white-space: nowrap; }
+
+/* filtros e lista */
+.tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+.tab { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-weight: 600; font-size: .9rem; cursor: pointer; transition: background .2s, color .2s; }
+.tab svg { width: 17px; height: 17px; color: var(--c, var(--sea)); }
+.tab small { font: 500 .75rem var(--mono); color: var(--muted); }
+.tab[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+.tab[aria-pressed="true"] svg, .tab[aria-pressed="true"] small { color: rgba(255, 255, 255, .85); }
+.vibes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.vibe { border: 0; border-radius: 999px; padding: 5px 11px; background: var(--sea-soft); color: var(--sea); font-weight: 600; font-size: .84rem; cursor: pointer; transition: background .2s; }
+.vibe[aria-pressed="true"] { background: var(--sea); color: #fff; }
+.group h3 { display: flex; align-items: center; gap: 8px; margin: 24px 0 10px; font-size: 1.2rem; }
+.group h3 svg { width: 22px; height: 22px; color: var(--c); }
+.group h3 small { font: 500 .78rem var(--mono); color: var(--muted); }
+.items { display: grid; gap: 8px; }
+.item { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; padding: 8px; border: 1px solid transparent; border-radius: var(--r-md); background: var(--surface); text-align: left; cursor: pointer; transition: border-color .2s, transform .1s; }
+.item:hover { border-color: var(--line); }
+.item:active { transform: scale(.99); }
+.thumb { width: 64px; height: 64px; border-radius: 12px; overflow: hidden; display: grid; place-items: center; background: color-mix(in srgb, var(--c) 13%, white); color: var(--c); }
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb svg { width: 28px; height: 28px; }
+.item-name { display: block; font-weight: 700; line-height: 1.25; }
+.item-meta { display: block; font-size: .8rem; color: var(--muted); }
+.item-desc { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 2px; font-size: .86rem; color: var(--muted); }
+.item-star { color: #9A6D00; padding-right: 4px; }
+.empty { color: var(--muted); padding: 24px 4px; margin: 0; }
+
+/* ficha */
+.sheet { border: 0; padding: 0; width: min(560px, 100%); max-width: 100%; max-height: 90dvh; margin: auto auto 0; border-radius: var(--r-lg) var(--r-lg) 0 0; background: var(--surface); color: var(--ink); overflow: auto; overscroll-behavior: contain; }
+.sheet::backdrop { background: rgba(6, 40, 52, .5); backdrop-filter: blur(2px); }
+@media (min-width: 800px) { .sheet { margin: auto; border-radius: var(--r-lg); } }
+@media (prefers-reduced-motion: no-preference) { .sheet[open] { animation: rise .25s cubic-bezier(.2, .8, .2, 1); } }
+@keyframes rise { from { transform: translateY(24px); opacity: 0; } }
+.sh-close { position: absolute; top: 10px; right: 10px; z-index: 1; width: 38px; height: 38px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .92); font-size: 1.3rem; line-height: 1; cursor: pointer; box-shadow: 0 4px 12px -4px rgba(6, 40, 52, .5); }
+.sh-img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.sh-band { height: 84px; display: grid; place-items: center; background: color-mix(in srgb, var(--c) 14%, white); color: var(--c); }
+.sh-band svg { width: 36px; height: 36px; }
+.sh-body { display: grid; gap: 10px; padding: 18px 20px max(24px, env(safe-area-inset-bottom, 0px)); }
+.sh-cat { display: inline-flex; align-items: center; gap: 6px; font: 500 .78rem var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--c); }
+.sh-cat svg { width: 16px; height: 16px; }
+.sh-body h3 { font-size: 1.7rem; line-height: 1.1; }
+.sh-body p { margin: 0; }
+.sh-meta { color: var(--muted); font-size: .92rem; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: .76rem; padding: 4px 10px; border-radius: 999px; background: var(--sea-soft); color: var(--sea); font-weight: 600; }
+.tag.sol { background: #FFF0CC; color: var(--sun-ink); }
+.when { background: var(--sky); border-radius: var(--r-sm); padding: 10px 12px; font-size: .93rem; }
+.when b { display: block; font: 500 .75rem var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--sea); margin-bottom: 2px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-weight: 600; font-size: .92rem; text-decoration: none; cursor: pointer; transition: transform .1s, background .2s; }
+.btn:hover { background: var(--sky); }
+.btn:active { transform: scale(.97); }
+.btn.primary { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+/* agenda */
+.days { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.day { flex: none; position: relative; width: 60px; padding: 9px 0 7px; display: grid; justify-items: center; gap: 1px; border-radius: var(--r-md); border: 1px solid var(--line); background: var(--surface); font-weight: 700; cursor: pointer; transition: background .2s; }
+.day small { font: 500 .75rem var(--mono); color: var(--muted); }
+.day.today::before { content: "hoje"; position: absolute; top: -9px; padding: 0 6px; border-radius: 999px; background: var(--ink); color: #fff; font: 500 .75rem var(--mono); }
+.day[aria-pressed="true"] { background: var(--sun); border-color: var(--sun); color: var(--sun-ink); }
+.day[aria-pressed="true"] small { color: var(--sun-ink); }
+.ag-list { display: grid; gap: 10px; margin-top: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); }
+.ag { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 0; border-radius: var(--r-md); background: var(--surface); text-align: left; cursor: pointer; transition: transform .1s; box-shadow: 0 6px 18px -14px rgba(13, 79, 107, .6); }
+.ag:active { transform: scale(.98); }
+.ag time { min-width: 52px; font: 500 .9rem var(--mono); color: var(--sea); }
+.ag b { display: block; }
+.ag small { color: var(--muted); font-size: .82rem; }
+.sub { font-size: 1.2rem; margin: 30px 0 14px; }
+.sec-head + .sub { margin-top: 4px; }
+.ag time small { display: block; font-size: .75rem; color: var(--muted); }
+.ag-note { margin: 12px 0 0; font-size: .82rem; color: var(--muted); }
+
+/* roteiros */
+.routes { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(270px, 310px); gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
+.route { scroll-snap-align: start; background: var(--surface); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow); }
+.route img { display: block; width: 100%; height: 140px; object-fit: cover; }
+.route-body { padding: 14px 16px 18px; display: grid; gap: 10px; }
+.route h3 { font-size: 1.25rem; }
+.route p { margin: 2px 0 0; font-size: .84rem; color: var(--muted); }
+.route ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.route li { display: grid; grid-template-columns: 82px minmax(0, 1fr); gap: 8px; font-size: .92rem; }
+.route li b { font: 500 .75rem var(--mono); text-transform: uppercase; letter-spacing: .05em; color: var(--sea); padding-top: 3px; }
+.lnk { border: 0; padding: 0; background: none; color: var(--sea); font-weight: 600; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; cursor: pointer; }
+
+/* dicas em baloes */
+.tipgroups { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr)); align-items: start; }
+.tg { background: var(--surface); border-radius: var(--r-lg); padding: 16px; }
+.tg h3 { display: flex; align-items: center; gap: 8px; font-size: 1.1rem; margin-bottom: 12px; }
+.tg h3 svg { width: 20px; height: 20px; color: var(--c); }
+.bubbles { display: flex; flex-wrap: wrap; gap: 8px; }
+.tip summary { list-style: none; cursor: pointer; padding: 7px 13px; border-radius: 999px; background: var(--sea-soft); color: var(--sea); font-weight: 600; font-size: .88rem; transition: background .2s; }
+.tip summary::-webkit-details-marker { display: none; }
+.tip[open] { flex-basis: 100%; }
+.tip[open] summary { display: inline-block; background: var(--sea); color: #fff; }
+.tip p { position: relative; margin: 10px 0 2px; padding: 11px 13px; border-radius: 14px; background: var(--ink); color: #fff; font-size: .92rem; }
+.tip p::before { content: ""; position: absolute; top: -6px; left: 22px; width: 12px; height: 12px; background: var(--ink); transform: rotate(45deg); }
+
+/* rodape */
+footer { border-top: 1px solid var(--line); padding-block: 22px 36px; color: var(--muted); font-size: .86rem; }
+.more { margin-top: 10px; }
+.more summary { cursor: pointer; font-weight: 600; color: var(--ink); }
+.more ul { margin: 10px 0 0; padding-left: 18px; columns: 2 300px; }
+.more li { break-inside: avoid; margin-bottom: 4px; }
+.more a { color: var(--sea); }
+</style>
+
+<div class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#inicio"><span class="sun" aria-hidden="true"></span>Floripa pelos Ingleses</a>
+    <nav aria-label="Seções"><a href="#mapa">Mapa</a><a href="#agenda">Samba</a><a href="#roteiros">Roteiros</a><a href="#dicas">Dicas</a></nav>
+  </div>
+</div>
+
+<header class="hero" id="inicio">
+  <div class="wrap hero-in">
+    <p class="eyebrow">Florianópolis · novembro de 2026</p>
+    <h1>Floripa pelos Ingleses</h1>
+    <p class="lede">Praia de água azul, roda de samba, drink bom e comida boa. Toque nos balões do mapa e monte o seu dia.</p>
+    <ul class="facts">
+      <li><b>21°C</b>água do mar</li>
+      <li><b>qui a dom</b>samba forte</li>
+      <li><b>26/12</b>Jurerê em temporada</li>
+      <li><b>sex 20/11</b>feriado</li>
+    </ul>
+  </div>
+  <span class="hero-credit">Foto: Ilha do Campeche, Luluhgomes, CC BY-SA 4.0</span>
+</header>
+
+<div class="wrap">
+  <div class="picks" id="picks" aria-label="Destaques"></div>
+</div>
+
+<main class="wrap">
+  <section id="mapa">
+    <div class="sec-head">
+      <h2>Mapa da ilha</h2>
+      <p class="intro">Cada balão é uma região, com o tempo de carro saindo dos Ingleses. Filtre pelo clima que vocês querem e toque pra ver os lugares.</p>
+    </div>
+    <div class="platform">
+      <div class="map-col">
+        <div class="map-card">
+          <div class="map-tools">
+            <div class="seg" role="group" aria-label="Área do mapa">
+              <button type="button" data-view="n" aria-pressed="true">Norte da Ilha</button>
+              <button type="button" data-view="i" aria-pressed="false">Ilha toda</button>
+            </div>
+            <span class="hint">Toque num balão</span>
+          </div>
+          <div class="map-frame" id="frame">
+            <div class="ocean">
+              <div class="stage" id="stage">
+                <svg id="map" viewBox="95 28 320 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                  <path class="foam" d="M32.7 804.2L47.0 814.9L44.5 836.9L51.1 844.5L52.1 853.8L70.4 861.2L58.1 882.4L72.1 904.8L60.5 917.8L50.9 951.1L65.4 948.0L70.9 951.2L71.2 958.2L101.7 935.4L106.1 909.0L114.8 894.7L112.1 887.6L117.4 881.1L115.4 873.6L132.7 850.1L146.0 843.0L160.6 843.8L165.3 847.1L162.8 859.2L168.3 866.2L188.2 868.1L207.3 848.1L198.0 835.3L202.4 826.0L208.5 819.3L220.3 820.5L216.3 804.2L203.3 800.0L198.8 790.6L184.4 794.9L176.6 782.2L180.7 775.0L175.5 780.5L166.1 773.9L163.8 742.1L172.1 712.5L188.8 682.8L209.6 663.4L219.5 616.0L239.5 575.4L265.5 540.3L275.3 539.3L275.9 527.5L286.0 520.4L285.6 514.9L298.9 512.3L297.7 504.9L291.9 503.8L291.9 493.4L301.0 478.7L305.2 479.3L303.4 473.2L308.1 466.2L320.4 465.7L323.2 457.7L319.9 446.6L333.4 429.3L329.5 423.0L311.6 427.5L304.0 415.8L302.5 393.6L310.7 358.8L329.8 317.2L358.3 273.1L379.5 248.8L398.3 241.3L401.2 223.4L395.3 211.4L398.1 199.1L406.1 180.4L423.3 176.5L427.9 160.5L415.9 145.0L404.5 167.8L386.5 163.3L370.0 150.5L352.7 124.2L344.5 90.5L333.6 89.7L329.1 66.6L335.2 49.0L326.2 41.5L320.4 43.2L317.8 57.5L296.9 53.8L289.6 65.7L302.6 83.8L304.4 103.5L301.6 112.2L290.1 122.3L261.0 132.9L224.3 132.9L214.3 138.8L209.4 153.7L201.6 156.0L171.7 152.5L143.7 141.1L133.8 169.6L108.2 178.2L93.6 197.8L100.3 196.8L107.5 184.5L123.3 187.1L130.0 182.4L137.6 186.2L145.2 199.2L142.3 206.2L145.2 213.2L131.1 208.8L129.3 220.5L124.3 224.5L120.1 221.8L117.5 232.9L110.7 235.7L107.3 262.8L117.8 260.7L134.7 271.1L135.8 289.7L150.2 308.9L146.5 318.1L128.5 329.8L133.3 342.5L122.6 358.6L139.7 371.1L150.4 369.7L163.1 376.0L144.8 401.4L135.5 402.3L147.0 415.1L145.8 427.6L131.9 427.7L110.8 419.4L99.7 432.8L96.7 445.9L67.2 458.5L63.9 463.8L68.7 476.7L88.0 490.1L88.4 505.3L97.6 513.3L109.0 502.1L122.7 511.3L128.8 532.5L130.1 571.4L135.4 573.4L133.6 580.0L113.7 576.1L103.3 568.4L80.9 575.8L62.0 618.4L49.6 625.6L58.3 638.7L49.7 651.8L58.4 659.2L59.8 668.4L73.9 668.6L84.7 680.9L70.9 697.6L62.5 716.3L66.9 755.7L73.2 764.6L69.9 782.8L53.3 798.0L32.7 804.2Z"/>
+                  <path class="land" d="M32.7 804.2L47.0 814.9L44.5 836.9L51.1 844.5L52.1 853.8L70.4 861.2L58.1 882.4L72.1 904.8L60.5 917.8L50.9 951.1L65.4 948.0L70.9 951.2L71.2 958.2L101.7 935.4L106.1 909.0L114.8 894.7L112.1 887.6L117.4 881.1L115.4 873.6L132.7 850.1L146.0 843.0L160.6 843.8L165.3 847.1L162.8 859.2L168.3 866.2L188.2 868.1L207.3 848.1L198.0 835.3L202.4 826.0L208.5 819.3L220.3 820.5L216.3 804.2L203.3 800.0L198.8 790.6L184.4 794.9L176.6 782.2L180.7 775.0L175.5 780.5L166.1 773.9L163.8 742.1L172.1 712.5L188.8 682.8L209.6 663.4L219.5 616.0L239.5 575.4L265.5 540.3L275.3 539.3L275.9 527.5L286.0 520.4L285.6 514.9L298.9 512.3L297.7 504.9L291.9 503.8L291.9 493.4L301.0 478.7L305.2 479.3L303.4 473.2L308.1 466.2L320.4 465.7L323.2 457.7L319.9 446.6L333.4 429.3L329.5 423.0L311.6 427.5L304.0 415.8L302.5 393.6L310.7 358.8L329.8 317.2L358.3 273.1L379.5 248.8L398.3 241.3L401.2 223.4L395.3 211.4L398.1 199.1L406.1 180.4L423.3 176.5L427.9 160.5L415.9 145.0L404.5 167.8L386.5 163.3L370.0 150.5L352.7 124.2L344.5 90.5L333.6 89.7L329.1 66.6L335.2 49.0L326.2 41.5L320.4 43.2L317.8 57.5L296.9 53.8L289.6 65.7L302.6 83.8L304.4 103.5L301.6 112.2L290.1 122.3L261.0 132.9L224.3 132.9L214.3 138.8L209.4 153.7L201.6 156.0L171.7 152.5L143.7 141.1L133.8 169.6L108.2 178.2L93.6 197.8L100.3 196.8L107.5 184.5L123.3 187.1L130.0 182.4L137.6 186.2L145.2 199.2L142.3 206.2L145.2 213.2L131.1 208.8L129.3 220.5L124.3 224.5L120.1 221.8L117.5 232.9L110.7 235.7L107.3 262.8L117.8 260.7L134.7 271.1L135.8 289.7L150.2 308.9L146.5 318.1L128.5 329.8L133.3 342.5L122.6 358.6L139.7 371.1L150.4 369.7L163.1 376.0L144.8 401.4L135.5 402.3L147.0 415.1L145.8 427.6L131.9 427.7L110.8 419.4L99.7 432.8L96.7 445.9L67.2 458.5L63.9 463.8L68.7 476.7L88.0 490.1L88.4 505.3L97.6 513.3L109.0 502.1L122.7 511.3L128.8 532.5L130.1 571.4L135.4 573.4L133.6 580.0L113.7 576.1L103.3 568.4L80.9 575.8L62.0 618.4L49.6 625.6L58.3 638.7L49.7 651.8L58.4 659.2L59.8 668.4L73.9 668.6L84.7 680.9L70.9 697.6L62.5 716.3L66.9 755.7L73.2 764.6L69.9 782.8L53.3 798.0L32.7 804.2Z"/>
+                  <path class="lagoon" d="M204.3 503.8L205.8 512.5L208.7 514.4L208.3 519.4L210.6 519.8L211.5 514.7L218.6 514.4L221.0 521.2L214.4 527.5L219.0 532.4L226.1 535.2L235.8 531.2L241.6 518.7L242.5 508.0L240.1 501.0L243.8 494.0L241.4 490.6L247.3 494.4L264.6 497.6L280.1 497.1L279.5 490.2L284.6 486.1L282.7 482.6L284.9 478.5L283.1 476.4L288.8 467.2L290.1 456.3L278.7 448.8L274.7 440.1L268.6 433.8L267.3 428.2L272.9 431.1L276.9 427.3L276.9 417.2L283.4 409.5L281.5 403.2L284.2 401.2L267.2 381.7L264.5 367.7L260.8 362.5L271.4 359.8L276.9 348.6L283.7 346.6L287.3 341.6L294.3 343.5L296.2 337.4L308.9 331.0L307.1 327.6L309.0 324.0L306.6 320.8L311.8 315.5L311.2 303.6L308.4 304.0L306.3 311.4L301.7 314.9L298.5 328.1L288.3 339.1L282.6 340.1L281.0 318.6L278.0 316.8L270.0 326.1L265.6 326.7L255.5 345.8L249.7 350.7L247.0 359.4L248.1 366.6L245.2 372.6L246.3 382.0L239.7 397.6L241.2 401.7L239.8 408.4L248.5 416.8L253.8 440.2L245.8 452.3L248.0 460.6L246.8 465.3L249.8 471.3L245.8 471.5L242.2 475.0L240.9 480.8L244.0 489.8L237.6 490.5L236.9 494.3L239.0 496.1L211.7 505.2L209.4 503.8L213.1 501.2L210.5 493.8L204.3 503.8Z"/>
+                  <circle class="land" cx="239" cy="674" r="5"/>
+                </svg>
+                <div id="pins"></div>
+              </div>
+            </div>
+            <div class="offmap" id="offmap"></div>
+            <div class="balloon" id="balloon" role="dialog" aria-label="Lugares da região" hidden></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="list-col">
+        <div class="tabs" id="tabs" role="group" aria-label="Categorias"></div>
+        <div class="vibes" id="vibes" role="group" aria-label="Clima"></div>
+        <div id="list" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="agenda">
+    <div class="sec-head">
+      <h2>Agenda</h2>
+      <p class="intro">Escolha o dia e veja onde tem roda de samba. Embaixo, as noites com data marcada em novembro.</p>
+    </div>
+    <h3 class="sub">Samba por dia</h3>
+    <div class="days" id="days" role="group" aria-label="Dia da semana"></div>
+    <div class="ag-list" id="aglist"></div>
+    <p class="ag-note">Montado com o que cada casa costuma fazer. Rodas mudam de dia: confira o Instagram antes de sair.</p>
+    <h3 class="sub">Datas de novembro</h3>
+    <div class="ag-list" id="events"></div>
+  </section>
+
+  <section id="roteiros">
+    <div class="sec-head">
+      <h2>Roteiros prontos</h2>
+      <p class="intro">Um dia por região, pra não perder a tarde no trânsito.</p>
+    </div>
+    <div class="routes" id="routes"></div>
+  </section>
+
+  <section id="dicas">
+    <div class="sec-head">
+      <h2>Dicas</h2>
+      <p class="intro">Toque num balão pra abrir a dica.</p>
+    </div>
+    <div class="tipgroups" id="tips"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    Pesquisado em 2 de novembro de 2026 e revisado por agentes de busca. Horários, rodas e preços mudam: confira o Instagram de cada casa no dia. Tempos de carro são estimativas sem trânsito.
+    <details class="more">
+      <summary>Fontes</summary>
+      <ul>
+        <li><a href="https://ndmais.com.br/turismo/11-lugares-para-curtir-roda-de-samba-em-florianopolis/" target="_blank" rel="noopener">ND+: 11 lugares pra roda de samba (dez/2024)</a></li>
+        <li><a href="https://ndmais.com.br/turismo/o-que-fazer-nos-ingleses/" target="_blank" rel="noopener">ND+: O que fazer nos Ingleses (jan/2025)</a></li>
+        <li><a href="https://www.instagram.com/giro.floripa/" target="_blank" rel="noopener">Instagram do Giro Floripa</a></li>
+        <li><a href="https://www.sympla.com.br/evento/samba-de-domingo-no-rancho/3547141" target="_blank" rel="noopener">Sympla: Samba de Domingo no Rancho (2026)</a></li>
+        <li><a href="https://wanderlog.com/place/details/10331628/samba-em-florianópolis--borogodó-da-ilha" target="_blank" rel="noopener">Borogodó da Ilha: horários</a></li>
+        <li><a href="https://www.grupodicas.com/melhores-pubs-e-bares-em-florianopolis/" target="_blank" rel="noopener">Grupo Dicas: bares em Florianópolis (2026)</a></li>
+        <li><a href="https://diariodefloripa.com.br/bares-na-lagoa-da-conceicao/" target="_blank" rel="noopener">Diário de Floripa: bares na Lagoa (2026)</a></li>
+        <li><a href="https://guia.melhoresdestinos.com.br/vida-noturna-florianopolis-65-402-p.html" target="_blank" rel="noopener">Melhores Destinos: vida noturna</a></li>
+        <li><a href="https://www.nsctotal.com.br/?p=7033217" target="_blank" rel="noopener">NSC Total: Ilha do Campeche</a></li>
+        <li><a href="https://www.nsctotal.com.br/?p=7836118" target="_blank" rel="noopener">NSC Total: despedida do Warung</a></li>
+        <li><a href="https://www.technoairlines.com/club/p12-florianopolis" target="_blank" rel="noopener">Agenda P12 2026/27</a></li>
+        <li><a href="https://informefloripa.com/getulio-secreto-conquista-a-capital-com-drinks-exclusivos-e-o-charme-de-um-speakeasy/" target="_blank" rel="noopener">Informe Floripa: Getúlio Secreto</a></li>
+        <li><a href="https://secretobar.com.br/" target="_blank" rel="noopener">Secreto Listening Bar</a></li>
+        <li><a href="https://beachhouseingleses.com.br/" target="_blank" rel="noopener">Beach House Ingleses</a></li>
+        <li><a href="https://cardapio.menu/restaurants/florianopolis/aladym-2" target="_blank" rel="noopener">Aladym: avaliações</a></li>
+        <li><a href="https://all.accor.com/a/pt-br/limitless/thematics/food-drink/santo-antonio-de-lisboa-florianopolis.html" target="_blank" rel="noopener">Accor: Santo Antônio de Lisboa</a></li>
+        <li><a href="https://www.nsctotal.com.br/?p=7851644" target="_blank" rel="noopener">NSC Total: Bar do Arante</a></li>
+        <li><a href="https://quantocustaviajar.com/blog/piscinas-naturais-da-barra-da-lagoa-florianopolis-sc" target="_blank" rel="noopener">Piscinas naturais da Barra da Lagoa</a></li>
+        <li><a href="https://www.temperaturadomar.pt/america-do-sul/brasil/florianopolis-ilha-de-santa-catarina/month/novembro/" target="_blank" rel="noopener">Temperatura do mar em novembro</a></li>
+        <li><a href="https://balneabilidade.ima.sc.gov.br/" target="_blank" rel="noopener">IMA: boletim de balneabilidade (29/10/2026)</a></li>
+        <li><a href="https://aventuranailha.com.br/pacotes/ilha-do-campeche-embarque-praia-da-armacao/" target="_blank" rel="noopener">Campeche saindo da Armação (2026)</a></li>
+        <li><a href="https://sambatur.com.br/Atividades/passeio-de-barco-para-a-ilha-do-campeche-saindo-da-barra-da-lagoa/" target="_blank" rel="noopener">Campeche saindo da Barra da Lagoa (2026)</a></li>
+        <li><a href="https://ndmais.com.br/turismo/caribe-de-sc-transporte-a-ilha-do-campeche-tera-cobranca-de-nova-taxa-por-cada-visitante/" target="_blank" rel="noopener">ND+: regras da Ilha do Campeche (jan/2026)</a></li>
+        <li><a href="https://escunamartin.com.br/barco-pirata-canasvieiras-preco/" target="_blank" rel="noopener">Escuna Martin: barco pirata</a></li>
+        <li><a href="https://www.jurereopen.com.br/" target="_blank" rel="noopener">Jurerê Open Shopping</a></li>
+        <li><a href="https://www.theworlds50best.com/discovery/Establishments/Brazil/Florianopolis/Ostradamus.html" target="_blank" rel="noopener">50 Best Discovery: Ostradamus</a></li>
+        <li><a href="https://www.warungclub.com.br/agenda/" target="_blank" rel="noopener">Warung: closing weekend</a></li>
+        <li><a href="https://www.pensanoevento.com.br/locais/2706/secreto-listening-bar" target="_blank" rel="noopener">Agenda do Secreto (nov/2026)</a></li>
+        <li><a href="https://www.pensanoevento.com.br/locais/343/delfino-146" target="_blank" rel="noopener">Agenda do Delfino 146 (nov/2026)</a></li>
+        <li><a href="https://www.deolhonailha.com.br/florianopolis/noticias/p12-lanca-maior-agenda-de-sua-historia-para-a-temporada-de-verao-2026-2027/" target="_blank" rel="noopener">De Olho na Ilha: temporada P12 2026/27</a></li>
+        <li><a href="https://technobeatscloud.com/en/events/event/blancah-long-set-terraza-music-park-2026-11-14" target="_blank" rel="noopener">BLANCAh no Terraza (14/11)</a></li>
+        <li><a href="https://wegoout.com.br/eventos/hernan-cattaneo-surreal-park" target="_blank" rel="noopener">Hernan Cattaneo no Surreal Park (20/11)</a></li>
+        <li><a href="https://www.greenvalleybr.com/" target="_blank" rel="noopener">Greenvalley</a></li>
+        <li><a href="https://www.openstreetmap.org/relation/3360578" target="_blank" rel="noopener">Contorno da ilha: © colaboradores do OpenStreetMap</a></li>
+      </ul>
+    </details>
+    <details class="more">
+      <summary>Créditos das fotos (Wikimedia Commons)</summary>
+      <ul id="credits"></ul>
+    </details>
+  </div>
+</footer>
+
+<dialog class="sheet" id="sheet" aria-labelledby="sh-title"></dialog>
+
+<script>
+const F = ', Florianópolis';
+const CAT = {
+  praia: ['Praias', '#0B7F8C', '<path d="M2 16c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2"/><path d="M2 20c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2"/><circle cx="12" cy="8" r="3.5"/>'],
+  passeio: ['Passeios', '#2F6FDB', '<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>'],
+  samba: ['Samba', '#9A6D00', '<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>'],
+  bar: ['Bares e drinks', '#C24E1F', '<path d="M4 4h16l-8 9z"/><path d="M12 13v7"/><path d="M8 20h8"/>'],
+  comida: ['Comida', '#C2334F', '<path d="M2 12c3.5-5 10-6.5 15-3l5-3v12l-5-3c-5 3.5-11.5 2-15-3z"/><circle cx="7.5" cy="11" r=".9" fill="currentColor"/>'],
+  balada: ['Balada', '#7A4FD0', '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>']
+};
+const icon = c => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${CAT[c][2]}</svg>`;
+const TAGS = { azul: 'Água azul', bonita: 'Gente bonita', animado: 'Animado', tranq: 'Tranquilo', sofis: 'Sofisticado', barato: 'Barato', perto: 'Pertinho', sol: 'Pôr do sol' };
+
+// regiao: [nome, lat, lon, tempo dos Ingleses, zona (n norte, i ilha, x fora do mapa), foto, rotulo curto]
+const REG = {
+  ingleses: ['Ingleses', -27.435, -48.395, 'vocês estão aqui', 'n', 'ingleses'],
+  santinho: ['Santinho', -27.462, -48.380, '5 min', 'n', 'santinho'],
+  brava: ['Praia Brava', -27.399, -48.414, '15 min', 'n', 'brava', 'Brava'],
+  lagoinha: ['Lagoinha', -27.386, -48.426, '15 min', 'n', 'lagoinha'],
+  cachoeira: ['Cachoeira do Bom Jesus', -27.418, -48.436, '10 min', 'n', 'cachoeira', 'Cachoeira'],
+  canas: ['Canasvieiras', -27.429, -48.462, '15 min', 'n', 'c_canas'],
+  jurere: ['Jurerê Internacional', -27.441, -48.500, '20 min', 'n', 'jurere', 'Jurerê'],
+  forte: ['Forte e Daniela', -27.440, -48.528, '25 min', 'n', 'forte', 'Forte'],
+  santo: ['Santo Antônio de Lisboa', -27.508, -48.520, '30 min', 'i', 'c_santo', 'Santo Antônio'],
+  barra: ['Barra da Lagoa', -27.575, -48.422, '25 min', 'i', 'c_barra', 'Barra'],
+  lagoa: ['Lagoa da Conceição', -27.604, -48.468, '40 min', 'i', 'c_lagoa', 'Lagoa'],
+  mole: ['Praia Mole', -27.603, -48.436, '30 min', 'i', 'mole', 'Mole'],
+  centro: ['Centro', -27.596, -48.550, '45 min', 'i', 'c_centro'],
+  coqueiros: ['Coqueiros, no continente', -27.611, -48.584, '40 min', 'i', null, 'Coqueiros'],
+  campeche: ['Ilha do Campeche', -27.698, -48.466, '20 a 50 min até o barco', 'i', 'campeche', 'Campeche'],
+  ribeirao: ['Ribeirão da Ilha', -27.718, -48.563, '1h15', 'i', 'c_ribeirao', 'Ribeirão'],
+  sul: ['Pântano do Sul', -27.781, -48.508, '1h15', 'i', null],
+  bombinhas: ['Bombinhas', 0, 0, '1h45, fora da ilha', 'x', 'bombinhas'],
+  camboriu: ['Camboriú', 0, 0, '1h30, fora da ilha', 'x', null]
+};
+
+const D = [
+  // praias
+  { id: 'lagoinha', c: 'praia', r: 'lagoinha', p: 'lagoinha', n: 'Lagoinha', w: 'Ponta das Canas', t: '15 min', g: ['azul', 'tranq', 'perto'], m: 'Praia da Lagoinha, Ponta das Canas' + F,
+    d: 'Enseada pequena cercada de mata, quase sem onda, água verde-azulada e areia branca. A água mais clara do Norte da Ilha.',
+    q: 'Vá cedo: a faixa de areia é curta e enche rápido no fim de semana.' },
+  { id: 'brava', c: 'praia', r: 'brava', p: 'brava', n: 'Praia Brava', w: 'Depois do canto norte dos Ingleses', t: '15 min', g: ['bonita', 'perto'], m: 'Praia Brava' + F,
+    d: 'Areia larga, mar de surfe e galera jovem e bonita. Na pré-temporada tem pouco quiosque, então leve água e petisco.',
+    q: 'Dá pra ir a pé pela Trilha da Feiticeira, do fim da Rua das Gaivotas: 40 min a 1h, de tênis, com pedra. Não entre no mar na foz do rio, no começo da trilha.' },
+  { id: 'santinho', c: 'praia', r: 'santinho', p: 'santinho', n: 'Praia do Santinho', w: 'Vizinha, pelo canto sul', t: '5 min', g: ['tranq', 'perto', 'sol'], m: 'Praia do Santinho' + F,
+    d: 'Mar de surfe, dunas grandes e inscrições rupestres no costão. Mais vazia e mais selvagem que os Ingleses.',
+    q: 'Pôr do sol de cima das dunas que ligam as duas praias.' },
+  { id: 'ingleses', c: 'praia', r: 'ingleses', p: 'ingleses', n: 'Ingleses, canto sul', w: 'No bairro', t: 'a pé', g: ['barato', 'tranq', 'perto', 'sol'], m: 'Praia dos Ingleses canto sul' + F,
+    d: 'Mar calmo e mais morno, restaurantes pé na areia e preço de bairro. Atrás ficam as dunas de sandboard.',
+    q: 'Fuja da foz do Rio Capivari, imprópria no boletim do IMA de 29/10. O Museu do Naufrágio é de graça e fecha às segundas; o horário varia, confira antes.' },
+  { id: 'cachoeira', c: 'praia', r: 'cachoeira', p: 'cachoeira', n: 'Cachoeira do Bom Jesus', w: 'Norte da Ilha', t: '10 min', g: ['tranq', 'barato', 'perto'], m: 'Praia da Cachoeira do Bom Jesus' + F,
+    d: 'Mar manso e raso, pouca gente fora da temporada. Cadeira, guarda-sol e cerveja gelada sem estresse.',
+    q: 'Própria no boletim do IMA de 29/10. Na vizinha Ponta das Canas, o ponto da lagoa estava impróprio.' },
+  { id: 'jurere', c: 'praia', r: 'jurere', p: 'jurere', n: 'Jurerê Internacional', w: 'Norte da Ilha', t: '20 min', g: ['bonita', 'sofis', 'tranq'], m: 'Praia de Jurerê Internacional' + F,
+    d: 'A praia chique da ilha: casarões, beach clubs e gente bonita. Mar calmo de baía.',
+    q: 'Fora do verão fica tranquila: ótima pra caminhar na orla e almoçar sem fila.' },
+  { id: 'forte', c: 'praia', r: 'forte', p: 'forte', n: 'Praia do Forte e Daniela', w: 'Ponta noroeste', t: '25 min', g: ['tranq', 'sol'], m: 'Praia do Forte' + F,
+    d: 'Mar de baía sem onda e a Fortaleza de São José da Ponta Grossa no morro. Das praias mais calmas da ilha.',
+    q: 'Fique pro fim de tarde: o sol se põe do lado do continente.' },
+  { id: 'mole', c: 'praia', r: 'mole', p: 'mole', n: 'Praia Mole', w: 'Leste, perto da Lagoa', t: '30 min', g: ['bonita', 'animado'], m: 'Praia Mole' + F,
+    d: 'Ponto de encontro de surfista e galera bonita, areia grossa e clima descolado. Mar forte e água mais fria.',
+    q: 'Fim de tarde no Bar da Deca, ali na areia.' },
+  { id: 'piscinas', c: 'praia', r: 'barra', p: 'piscinas', n: 'Piscinas naturais da Barra', w: 'Barra da Lagoa', t: '25 min', g: ['azul', 'barato'], m: 'Piscinas Naturais da Barra da Lagoa' + F,
+    d: 'Uns 600 m de trilha pelo costão levam a piscinas de água cristalina entre as pedras. Na volta, banho na Prainha.',
+    q: 'As piscinas só se formam com mar calmo. Começa no fim da Servidão da Prainha. Sem sombra: boné e protetor. Não pule das pedras.' },
+  { id: 'campeche', c: 'praia', r: 'campeche', p: 'campeche', n: 'Ilha do Campeche', w: 'Barco do Campeche, Barra da Lagoa ou Armação', t: '20 a 50 min até o barco', g: ['azul', 'bonita'], m: 'Ilha do Campeche' + F,
+    d: 'O Caribe catarinense: água turquesa, areia branquíssima e trilhas com arte rupestre. A água mais azul da viagem.',
+    q: 'Pela Armação: R$ 170 até 30/11, 30 min de barco, saída 9h30. Pela Barra da Lagoa, mais perto de vocês: R$ 250 a R$ 350, 1h10 de barco. Mais R$ 15 de ingresso. Reserve, leve dinheiro e documento. Até 4h na ilha, limite de 800 pessoas por dia.' },
+  { id: 'bombinhas', c: 'praia', r: 'bombinhas', p: 'bombinhas', n: 'Bombinhas', w: 'Fora da ilha, rumo norte pela BR-101', t: '1h45', g: ['azul', 'tranq'], m: 'Praia da Sepultura, Bombinhas',
+    d: 'A água mais transparente da região. Sepultura e Lagoinha têm piscinas naturais entre as pedras e peixinho no costão.',
+    q: 'São 105 km: 1h45 a 2h de carro. Vale o dia inteiro. Saia cedo pra pegar a BR-101 vazia.' },
+
+  // passeios
+  { id: 'c_ingleses', c: 'passeio', r: 'ingleses', p: 'c_ingleses', n: 'Centrinho dos Ingleses', w: 'Estrada Dom João Becker e arredores', t: 'no bairro', g: ['perto', 'barato', 'animado'], m: 'Estrada Dom João Becker, Ingleses' + F,
+    d: 'Lojas, lanchonetes, bares, food trucks e pub de cerveja artesanal perto da praia. Na temporada fica aberto até mais tarde.',
+    q: 'A noite sem carro: dá pra fazer tudo a pé.' },
+  { id: 'c_canas', c: 'passeio', r: 'canas', p: 'c_canas', n: 'Centrinho de Canasvieiras', w: 'Canasvieiras', t: '15 min', g: ['perto', 'animado', 'barato'], m: 'Canasvieiras' + F,
+    d: 'O centrinho mais movimentado do Norte, cheio de turista argentino: restaurantes, bares com música ao vivo e as escunas saindo da praia.',
+    q: 'Junte com a roda do Giro Floripa à noite.' },
+  { id: 'c_jurere', c: 'passeio', r: 'jurere', p: 'c_jurere', n: 'Jurerê Internacional', w: 'Jurerê Open Shopping e orla', t: '20 min', g: ['sofis', 'bonita', 'tranq'], m: 'Jurerê Open Shopping' + F,
+    d: 'Ruas arborizadas, casarões e o Open Shopping, centro comercial a céu aberto perto da praia, com restaurantes e lojas.',
+    q: 'Open Shopping na Av. dos Búzios, 1800: seg a sáb, 10h às 20h. Domingo, restaurantes das 12h às 20h.' },
+  { id: 'c_santo', c: 'passeio', r: 'santo', p: 'c_santo', n: 'Santo Antônio de Lisboa', w: 'Orla e praça da igreja', t: '30 min', g: ['sol', 'tranq', 'sofis'], m: 'Santo Antônio de Lisboa' + F,
+    d: 'Casario açoriano, a Igreja de Nossa Senhora das Necessidades e lojinhas de cerâmica e renda de bilro na praça. Restaurantes na beira da baía.',
+    q: 'No fim de semana tem a Feira das Alfaias. Chegue antes do pôr do sol, ande pela Rua XV de Novembro e fique pro jantar.' },
+  { id: 'c_lagoa', c: 'passeio', r: 'lagoa', p: 'c_lagoa', n: 'Centrinho da Lagoa', w: 'Av. das Rendeiras e ruas perto da ponte', t: '40 min', g: ['animado', 'bonita'], m: 'Centrinho da Lagoa da Conceição' + F,
+    d: 'O centrinho mais boêmio da ilha: bares, restaurantes e baladas em volta da Lagoa.',
+    q: 'Movimento forte de quinta a sábado. Pra voltar de madrugada, aplicativo funciona bem.' },
+  { id: 'c_barra', c: 'passeio', r: 'barra', p: 'c_barra', n: 'Barra da Lagoa', w: 'Canal e vila de pescadores', t: '25 min', g: ['tranq', 'barato'], m: 'Canal da Barra da Lagoa' + F,
+    d: 'Vila de pescadores no canal que liga a Lagoa ao mar, com restaurantes de peixe na beira e a trilha das piscinas naturais.',
+    q: 'Atravesse o canal pela ponte pênsil e siga até a Prainha. Tem caiaque e SUP no canal.' },
+  { id: 'c_centro', c: 'passeio', r: 'centro', p: 'c_centro', n: 'Centro histórico', w: 'Praça XV, Mercado e Ponte Hercílio Luz', t: '45 min', g: ['animado', 'barato'], m: 'Praça XV de Novembro' + F,
+    d: 'Praça XV com a figueira centenária, Catedral, Mercado Público e Largo da Alfândega a poucas quadras. À noite, a Ponte Hercílio Luz iluminada.',
+    q: 'Nos fins de semana e feriados a ponte é só de pedestres e ciclistas. Mirante das 7h às 22h.' },
+  { id: 'c_ribeirao', c: 'passeio', r: 'ribeirao', p: 'c_ribeirao', n: 'Ribeirão da Ilha', w: 'Freguesia do Ribeirão', t: '1h15', g: ['tranq', 'sofis'], m: 'Freguesia do Ribeirão da Ilha' + F,
+    d: 'A vila açoriana mais preservada da ilha: casinhas coloridas, igreja antiga e fazendas de ostra na frente.',
+    q: 'Combine com almoço longo no Ostradamus.' },
+
+  { id: 'pirata', c: 'passeio', r: 'canas', p: 'c_canas', n: 'Barco Pirata de Canasvieiras', w: 'Trapiche de Canasvieiras', t: '15 min', g: ['azul', 'animado', 'perto'], m: 'Escuna Martin, Canasvieiras' + F,
+    d: 'Passeio de escuna saindo do trapiche, com parada pra banho na Ilha do Francês e passagem pela Baía dos Golfinhos.',
+    q: 'Pocket de 2h por R$ 140 comprando com 24h de antecedência. Completo de 4h por R$ 190, às 10h30 de ter, sex e sáb.' },
+  { id: 'morro', c: 'passeio', r: 'ingleses', n: 'Mirantes do Morro dos Ingleses', w: 'Canto sul dos Ingleses', t: '5 min', g: ['perto', 'sol', 'barato'], m: 'Morro dos Ingleses, trilha' + F,
+    d: 'Três trilhas sinalizadas no morro do canto sul, como o Caminho do Engenho (fácil) e o Caminho da Grota (moderado), com mirantes sobre a praia e as dunas.',
+    q: 'Suba no fim da tarde e veja o pôr do sol lá de cima.' },
+  { id: 'lagoinhaleste', c: 'praia', r: 'sul', n: 'Matadeiro e Lagoinha do Leste', w: 'Sul da Ilha, por trilha', t: '1h15', g: ['tranq', 'bonita'], m: 'Praia da Lagoinha do Leste' + F,
+    d: 'Praias selvagens do sul, só por trilha. Até a Lagoinha do Leste são 1h a 1h30 de subida a partir do Pântano do Sul.',
+    q: 'Tênis, água e lanche. Na volta, peixe no Bar do Arante.' },
+
+  // samba
+  { id: 'giro', c: 'samba', r: 'canas', n: 'Giro Floripa', w: 'R. Madre Maria Vilac, 1773, Canasvieiras', t: '15 min', g: ['animado', 'perto'], m: 'Giro Floripa, Rua Madre Maria Vilac 1773' + F,
+    d: 'Roda de samba de quinta a sábado. O samba mais perto dos Ingleses.',
+    q: 'Qui a partir das 20h. Sex e sáb, roda das 21h à meia-noite. Confira no Instagram antes.' },
+  { id: 'bastiao', c: 'samba', r: 'santo', n: 'Rancho do Bastião', w: 'Santo Antônio de Lisboa', t: '30 min', g: ['animado'], m: 'Rancho do Bastião, Santo Antônio de Lisboa' + F,
+    d: 'Casa de samba de raiz, choro e MPB que recebe compositores do Brasil inteiro. O Samba de Domingo segue firme em 2026.',
+    q: 'Dom, 19h à meia-noite. Alguns sábados tem show de samba à noite. Ingresso pelo Sympla.' },
+  { id: 'largo', c: 'samba', r: 'centro', n: 'Samba do Largo', w: 'Largo da Alfândega, Centro', t: '45 min', g: ['animado', 'barato'], m: 'Largo da Alfândega' + F,
+    d: 'Roda sob uma tenda grande no Centro histórico, com todo mundo dançando junto. Cerveja, drink e petisco.',
+    q: 'Sáb, 12h às 16h30. O Mercado Público fica do lado.' },
+  { id: 'noel', c: 'samba', r: 'centro', n: 'Bar do Noel', w: 'Travessa Ratcliff, Centro', t: '45 min', g: ['animado', 'barato'], m: 'Bar do Noel, Travessa Ratcliff' + F,
+    d: 'Boteco raiz de samba, choro e feijoada. A travessa inteira lota.',
+    q: 'Roda de sex a dom.' },
+  { id: 'bugio', c: 'samba', r: 'centro', n: 'Bugio', w: 'Centro e Trindade', t: '45 min', g: ['animado'], m: 'Bugio Centro, Rua Vitor Meireles' + F,
+    d: 'Bar cultural com cerveja artesanal e mesas na rua. No Centro toca o Samba de Antonieta.',
+    q: 'Centro: sáb, 17h30 às 21h30. Trindade: ter, a partir das 20h.' },
+  { id: 'borogodo', c: 'samba', r: 'centro', n: 'Borogodó da Ilha', w: 'Jardim Olívio Amorim, 150, Centro', t: '45 min', g: ['animado', 'barato'], m: 'Borogodó da Ilha' + F,
+    d: 'Bar pequeno onde o samba manda na agenda, com sambistas da ilha e de fora. Cerveja, porção e preço honesto.',
+    q: 'Qua a sex, das 16h às 23h30. Sáb, das 15h30 às 22h.' },
+  { id: 'esquina', c: 'samba', r: 'centro', n: 'Da Esquina Boteco', w: 'Perto da Beira-Mar Norte', t: '45 min', g: ['animado', 'barato'], m: 'Da Esquina Boteco' + F,
+    d: 'Boteco de calçada com roda de samba e litrão barato.',
+    q: 'Sex, por volta das 21h, até meia-noite.' },
+  { id: 'pantai', c: 'samba', r: 'lagoa', n: 'Pantai Chill House', w: 'Lagoa da Conceição', t: '40 min', g: ['sofis', 'animado'], m: 'Pantai, Lagoa da Conceição' + F,
+    d: 'O Samba da Castanheira: quinteto de samba, gafieira e choro numa varanda de vidro com vista pra Lagoa.',
+    q: 'Dom, por volta das 20h.' },
+  { id: 'araca', c: 'samba', r: 'lagoa', n: 'O Araçá', w: 'Perto do terminal da Lagoa', t: '40 min', g: ['animado'], m: 'O Araçá, Lagoa da Conceição' + F,
+    d: 'Casa pequena e aconchegante, ponto cultural da Lagoa, com samba cativo aos domingos.',
+    q: 'Dom.' },
+  { id: 'amo', c: 'samba', r: 'centro', n: 'Amo Floripa Café & Mar', w: 'Cabeceira da Ponte Hercílio Luz', t: '45 min', g: ['animado'], m: 'Amo Floripa Café e Mar' + F,
+    d: 'Samba e pagode ao ar livre com a ponte de cenário.',
+    q: 'Apresentações semanais. Veja o dia no Instagram.' },
+  { id: 'zemane', c: 'samba', r: 'coqueiros', n: 'Boteco Zé Mané', w: 'R. Des. Pedro Silva, 2360, Coqueiros', t: '40 min', g: ['animado', 'barato'], m: 'Boteco Zé Mané, Rua Desembargador Pedro Silva 2360' + F,
+    d: 'Casa de samba conhecida do lado continental, com artistas locais e música ao vivo.',
+    q: 'Ter a dom. Os dias de roda mudam: confira antes.' },
+
+  // bares e drinks
+  { id: 'beachhouse', c: 'bar', r: 'ingleses', n: 'Beach House', w: 'Estr. Dom João Becker, 1137, Ingleses', t: 'no bairro', g: ['sofis', 'perto'], m: 'Beach House Ingleses, Estrada Dom João Becker 1137' + F,
+    d: 'Bistrô e lounge com vista pro mar, drinks e música ao vivo. O fim de tarde arrumado sem sair dos Ingleses.',
+    q: 'Abre das 10h às 18h. Música ao vivo nos fins de semana, à tarde.' },
+  { id: 'boni', c: 'bar', r: 'lagoa', n: 'Bar do Boni', w: 'Av. Acácio Garibaldi São Thiago, 67, Lagoa', t: '40 min', g: ['sol', 'animado'], m: 'Bar do Boni, Avenida Prefeito Acácio Garibaldi São Thiago 67' + F,
+    d: 'Deck na beira da Lagoa, música ao vivo quase todo dia, petisco de frutos do mar e boa carta de drinks.',
+    q: 'Chegue com sol pra ver o pôr do sol da varanda.' },
+  { id: 'deca', c: 'bar', r: 'mole', n: 'Bar da Deca', w: 'Praia Mole', t: '30 min', g: ['animado', 'bonita', 'barato'], m: 'Bar da Deca, Praia Mole' + F,
+    d: 'Barulhento e animado, com pastel de camarão e cerveja depois do surfe.',
+    q: 'Melhor em fim de tarde de sol.' },
+  { id: 'getulio', c: 'bar', r: 'centro', n: 'Getúlio Secreto', w: 'Praça Getúlio Vargas, 158, Centro', t: '45 min', g: ['sofis'], m: 'Getúlio Secreto, Praça Getúlio Vargas' + F,
+    d: 'Speakeasy no subsolo de um casarão, anexo ao Los Troncos. Só 30 lugares, coquetelaria autoral e destilados premium.',
+    q: 'Ter a sáb, 18h30 às 23h. A entrada é uma janelinha na calçada. Chegue cedo.' },
+  { id: 'secreto', c: 'bar', r: 'centro', n: 'Secreto Listening Bar', w: 'R. Luís Delfino, 53, 2º andar, Centro', t: '45 min', g: ['sofis', 'animado'], m: 'Secreto Listening Bar, Rua Luís Delfino 53' + F,
+    d: 'Bar escondido em cima do Bis Bistrot, com coquetelaria autoral, música ao vivo e DJ.',
+    q: 'Qua a sáb, a partir das 19h. Reserva pelo WhatsApp (48) 99694-9755.' },
+  { id: 'delfino', c: 'bar', r: 'centro', n: 'Delfino 146', w: 'R. Luís Delfino, 146, Centro', t: '45 min', g: ['sofis', 'tranq'], m: 'Delfino 146, Rua Luís Delfino 146' + F,
+    d: 'Café numa casa centenária que esconde um bar no porão, com jazz, soul e MPB ao vivo.',
+    q: 'Shows de qui a sáb à noite, até meia-noite.' },
+  { id: 'roof', c: 'balada', r: 'centro', n: 'The Roof', w: '20º andar do Majestic, Beira-Mar Norte', t: '45 min', g: ['sofis', 'animado', 'bonita'], m: 'The Roof, Majestic Palace Hotel' + F,
+    d: 'Balada no alto do hotel, com DJ e vista da baía. Já teve até Pagode no Telhado.',
+    q: 'Abre nas sextas à noite, por evento. Veja a agenda no site antes.' },
+
+  // comida
+  { id: 'aladym', c: 'comida', r: 'ingleses', n: 'Aladym', w: 'Ingleses', t: 'no bairro', g: ['perto'], m: 'Aladym, Ingleses' + F,
+    d: 'A sequência de camarão famosa do bairro: nota 4,8 em cerca de 9 mil avaliações. A sequência pra dois serve três.',
+    q: 'Cerca de R$ 80 a R$ 100 por pessoa. Vá com fome e sem pressa.' },
+  { id: 'ancoradouro', c: 'comida', r: 'ingleses', n: 'Ancoradouro', w: 'Frente pra praia dos Ingleses', t: 'no bairro', g: ['perto'], m: 'Ancoradouro Restaurante, Ingleses' + F,
+    d: 'Sequência de camarão, moqueca e caldeirada olhando o mar.',
+    q: 'Bom pra almoço depois da praia.' },
+  { id: 'rancho', c: 'comida', r: 'santo', n: 'Rancho Açoriano', w: 'Santo Antônio de Lisboa', t: '30 min', g: ['sol', 'tranq'], m: 'Rancho Açoriano, Santo Antônio de Lisboa' + F,
+    d: 'Sequência de ostras com o sol caindo na baía. Mais de 90% das ostras do país saem de Santa Catarina, boa parte daqui da frente.',
+    q: 'Chegue uma hora antes do pôr do sol pra pegar mesa na beira.' },
+  { id: 'beiramar', c: 'comida', r: 'santo', n: 'Restaurante Beira Mar', w: 'Santo Antônio de Lisboa', t: '30 min', g: ['sol', 'tranq'], m: 'Restaurante Beira Mar, Santo Antônio de Lisboa' + F,
+    d: 'Caipirinha e ostra fresca na beira da água, na hora do pôr do sol.',
+    q: 'Bom plano B se o Rancho estiver cheio.' },
+  { id: 'rosso', c: 'comida', r: 'santo', n: 'Rosso', w: 'Rod. Gilson da Costa Xavier, 201, Santo Antônio', t: '30 min', g: ['sofis'], m: 'Rosso Restro, Santo Antônio de Lisboa' + F,
+    d: 'Peixes e frutos do mar com cozinha italiana contemporânea e vista da baía, desde 2010. O polvo é a marca da casa.',
+    q: 'Reserve.' },
+  { id: 'sintra', c: 'comida', r: 'santo', n: 'Marisqueira Sintra', w: 'Santo Antônio de Lisboa', t: '30 min', g: ['tranq'], m: 'Marisqueira Sintra, Santo Antônio de Lisboa' + F,
+    d: 'Cozinha açoriana e portuguesa no bairro mais português da ilha.' },
+  { id: 'box32', c: 'comida', r: 'centro', p: 'box32', n: 'Box 32', w: 'Mercado Público, Centro', t: '45 min', g: ['animado'], m: 'Box 32, Mercado Público' + F,
+    d: 'Desde 1984 o balcão mais famoso do Mercado: petiscos de frutos do mar e chope gelado no meio do burburinho.',
+    q: 'Junte com o Samba do Largo no sábado.' },
+  { id: 'ostradamus', c: 'comida', r: 'ribeirao', n: 'Ostradamus', w: 'Rod. Baldicero Filomeno, 7640, Ribeirão da Ilha', t: '1h15', g: ['sofis', 'tranq'], m: 'Ostradamus, Ribeirão da Ilha' + F,
+    d: 'Referência em ostras na cidade, numa vila açoriana do sul da ilha. Programa pra almoço longo.',
+    q: 'Ter a dom, almoço e jantar. Às 13h já tem fila. Tem unidade em Coqueiros, mais perto: R. Des. Pedro Silva, 2314.' },
+  { id: 'barba', c: 'comida', r: 'lagoa', n: 'Barba Negra', w: 'Av. das Rendeiras, 1628, Lagoa', t: '40 min', g: ['animado'], m: 'Barba Negra, Lagoa da Conceição' + F,
+    d: 'Sequência de camarão de frente pra Lagoa, na avenida dos bares.',
+    q: 'Bom antes do Santa Club ou do John Bull.' },
+  { id: 'arante', c: 'comida', r: 'sul', n: 'Bar do Arante', w: 'Pântano do Sul', t: '1h15', g: ['tranq', 'barato'], m: 'Bar do Arante, Pântano do Sul' + F,
+    d: 'Aberto desde 1958, com as paredes forradas de bilhetinhos de visitantes. Peixe fresco, pirão e caipirinha de frente pro mar.',
+    q: 'Combina com a Ilha do Campeche saindo da Armação, que fica perto.' },
+
+  // balada
+  { id: 'santa', c: 'balada', r: 'lagoa', n: 'Santa Club', w: 'Av. das Rendeiras, 470, Lagoa', t: '40 min', g: ['animado', 'barato'], m: 'Santa Club, Lagoa da Conceição' + F,
+    d: 'A balada que segura a noite fora da temporada: pop, funk, reggaeton e eletrônica.',
+    q: 'Fim de semana. Ingressos a partir de R$ 20.' },
+  { id: 'p12', c: 'balada', r: 'jurere', n: 'P12', w: 'Jurerê Internacional', t: '20 min', g: ['bonita', 'sofis', 'animado'], m: 'P12 Parador, Jurerê Internacional' + F,
+    d: 'O beach club mais famoso da ilha, com almoço que vira festa. Em novembro só abre em dia de evento.',
+    q: 'Nenhum evento confirmado em novembro. A temporada principal vai de 26/12 a 26/03.' },
+  { id: 'safari', c: 'balada', r: 'jurere', n: 'Safari Beach', w: 'Alameda César Nascimento, 500, Jurerê', t: '20 min', g: ['animado', 'bonita'], m: 'Safari Beach, Jurerê Internacional' + F,
+    d: 'Day club de house e techno, com line-up gringo no verão.',
+    q: 'Em 2025 fez festa no feriado da Consciência Negra. Em 2026 o feriado cai na sexta, 20/11: vale olhar a agenda.' },
+  { id: 'cafe', c: 'balada', r: 'jurere', n: 'Café de La Musique', w: 'Jurerê Internacional', t: '20 min', g: ['sofis', 'bonita', 'animado'], m: 'Café de La Musique, Jurerê Internacional' + F,
+    d: 'Clássico do verão de Jurerê, no auge entre o Natal e o Ano-Novo.',
+    q: 'Agenda 2026/27 ainda sem datas públicas.' },
+  { id: 'posh', c: 'balada', r: 'jurere', n: 'Posh Club', w: 'Jurerê Internacional', t: '20 min', g: ['animado', 'bonita'], m: 'Posh Club, Jurerê Internacional' + F,
+    d: 'A balada noturna de Jurerê, que fez 20 anos em março de 2026 e abre poucas noites por ano.',
+    q: 'A abertura da temporada costuma ser no Natal.' },
+  { id: 'johnbull', c: 'balada', r: 'lagoa', n: 'John Bull', w: 'Av. das Rendeiras, 1046, Lagoa', t: '40 min', g: ['animado'], m: 'John Bull Floripa, Lagoa da Conceição' + F,
+    d: 'Casa de shows de rock, blues e reggae, pra variar o som.',
+    q: 'Ingresso varia por show.' },
+  { id: 'milk', c: 'balada', r: 'jurere', n: 'Milk Club', w: 'Jurerê Internacional', t: '20 min', g: ['animado', 'bonita'], m: 'Milk Club, Jurerê Internacional' + F,
+    d: 'Balada de eletrônica em Jurerê. Na sexta, 6/11, tem Petroski das 23h às 7h.',
+    q: 'Ingresso a partir de R$ 100 pela Ingresse. A data vem de agenda de eventos: confirme antes.' },
+  { id: 'terraza', c: 'balada', r: 'jurere', n: 'Terraza Music Park', w: 'SC-402, km 1,5, Jurerê', t: '20 min', g: ['animado', 'bonita'], m: 'Terrazza Music Park, Jurerê' + F,
+    d: 'Pista ao ar livre de música eletrônica. No sábado, 14/11, BLANCAh faz set longo das 23h às 7h, com Ricardo Lin.',
+    q: 'Ingresso a partir de R$ 50 pelo Resident Advisor.' },
+  { id: 'surreal', c: 'balada', r: 'camboriu', n: 'Surreal Park', w: 'Av. João da Costa, 3051, Camboriú', t: '1h30', g: ['animado', 'sofis'], m: 'Surreal Park, Avenida João da Costa 3051, Camboriú',
+    d: 'Hernan Cattaneo, nome máximo do house progressivo, na sexta do feriado, 20/11, a partir das 22h.',
+    q: 'Ingresso pela Blueticket. Fica a 1h30 dos Ingleses: combine motorista ou durma por lá.' },
+  { id: 'greenvalley', c: 'balada', r: 'camboriu', n: 'Greenvalley', w: 'Rio Pequeno, Camboriú', t: '1h30', g: ['animado', 'bonita'], m: 'Green Valley, Camboriú',
+    d: 'Clube que já foi eleito o melhor do mundo pela DJ Mag. No sábado, 21/11, faz festa de aniversário com atração de tech house ainda não divulgada.',
+    q: 'As vendas da temporada abrem em 3/11, ao meio-dia, só pra cadastrados no site.' }
+];
+const byId = Object.fromEntries(D.map(p => [p.id, p]));
+
+// samba por dia (indice = Date.getDay(): 0 dom)
+const DN = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+const AG = [
+  [['bastiao', '19h'], ['pantai', '20h'], ['araca', 'noite'], ['noel', 'noite']],
+  [],
+  [['bugio', '20h', 'Trindade']],
+  [['borogodo', '16h']],
+  [['giro', '20h'], ['borogodo', '16h']],
+  [['borogodo', '16h'], ['giro', '21h'], ['esquina', '21h'], ['noel', 'noite']],
+  [['largo', '12h'], ['borogodo', '15h30'], ['bugio', '17h30', 'Centro'], ['giro', '21h'], ['noel', 'noite']]
+];
+
+const EVENTS = [
+  ['06/11', 'sex', '23h', 'Petroski', 'milk'],
+  ['07/11', 'sáb', '20h', 'House com DJ Scher', 'secreto'],
+  ['14/11', 'sáb', '20h', 'Amy Winehouse: Back to Black 20 anos', 'secreto'],
+  ['14/11', 'sáb', '23h', 'BLANCAh, set longo até as 7h', 'terraza'],
+  ['20/11', 'sex, feriado', '22h', 'Hernan Cattaneo', 'surreal'],
+  ['21/11', 'sáb', '22h', 'Aniversário do Greenvalley', 'greenvalley']
+];
+
+const PICKS = [
+  ['campeche', 'Água azul', 'Ilha do Campeche', 'campeche'],
+  ['lagoinha', 'Pertinho', 'Lagoinha', 'lagoinha'],
+  ['c_santo', 'Pôr do sol', 'Ostras em Santo Antônio', 'rancho'],
+  ['box32', 'Sábado', 'Samba do Largo e Mercado', 'largo'],
+  ['c_lagoa', 'Domingo', 'Samba com vista pra Lagoa', 'pantai'],
+  ['ingleses', 'No bairro', 'Sequência de camarão', 'aladym'],
+  ['c_centro', 'Noite', 'Speakeasy no Centro', 'getulio'],
+  ['bombinhas', 'Bate-volta', 'Bombinhas', 'bombinhas']
+];
+
+const ROUTES = [
+  ['Dia de água azul', 'Leste e Lagoa · sol sem vento sul', 'campeche', [['Manhã', 'Barco da Barra da Lagoa pra {campeche|Ilha do Campeche}'], ['Tarde', 'Mergulho nas {piscinas|piscinas naturais}'], ['Pôr do sol', 'Deck do {boni|Bar do Boni}'], ['Noite', 'Sequência no {barba|Barba Negra}; no fim de semana, {santa|Santa Club}']]],
+  ['Dia perto de casa', 'Norte · zero trânsito', 'lagoinha', [['Manhã', '{lagoinha|Lagoinha}, chegando cedo'], ['Almoço', 'Sequência no {aladym|Aladym}'], ['Tarde', 'Trilha da Feiticeira até a {brava|Brava}'], ['Fim de tarde', 'Drink no {beachhouse|Beach House} (fim de semana)'], ['Noite', 'Roda no {giro|Giro Floripa} (qui a sáb)']]],
+  ['Sábado de samba', 'Centro · vá de Uber', 'box32', [['12h', '{largo|Samba do Largo}'], ['Tarde', 'Chope no {box32|Box 32}, no Mercado'], ['17h30', 'Roda no {bugio|Bugio Centro}'], ['Noite', '{getulio|Getúlio Secreto} (reserve) ou {noel|Bar do Noel}']]],
+  ['Dia chique', 'Norte e baía', 'c_santo', [['Manhã', 'Orla de {jurere|Jurerê Internacional}'], ['Pôr do sol', 'Ostras no {rancho|Rancho Açoriano}'], ['Noite', 'Jantar no {rosso|Rosso}'], ['Se for dom', 'Samba no {bastiao|Rancho do Bastião}']]],
+  ['Domingo na Lagoa', 'Leste', 'c_lagoa', [['Tarde', '{mole|Praia Mole} e o {deca|Bar da Deca}'], ['Pôr do sol', '{boni|Bar do Boni}'], ['20h', 'Samba da Castanheira no {pantai|Pantai}']]]
+];
+
+const TIPS = [
+  ['Circular', 'passeio', [
+    ['35 km do Centro', 'Os Ingleses ficam a uns 35 km do Centro. Junte os programas por região num mesmo dia: Norte, Lagoa e leste, Centro, Sul.'],
+    ['Horário de pico', 'SC-401 e SC-403 travam no fim da tarde e em fim de semana de sol. Saia antes das 17h ou depois das 19h.'],
+    ['Voltar de madrugada', 'Na Lagoa e no Centro, aplicativo de transporte funciona de madrugada. Nos dias de cerveja, deixe o carro.']]],
+  ['Mar', 'praia', [
+    ['Água 21°C', 'No começo de novembro a água fica perto de 21 a 22°C. Dá banho, mas é refrescante.'],
+    ['Balneabilidade', 'No boletim do IMA de 29/10/2026, Lagoinha, Santinho, Jurerê, Forte, Mole e Barra estavam próprias. Tinha ponto impróprio nos Ingleses e na Brava (foz de rio), em Canasvieiras e na Lagoa. Fuja de foz de rio e veja o boletim novo no site do IMA.'],
+    ['Barco do Campeche', 'Reserve antes: o limite é de 800 pessoas por dia. O resto do pagamento é em dinheiro no dia, e pedem documento. Com chuva o barco não sai.']]],
+  ['Temporada', 'balada', [
+    ['Pré-temporada', 'Muitos quiosques e beach clubs abrem só no fim de semana ou com evento até o fim de dezembro. Em troca: praia vazia e preço melhor.'],
+    ['Feriado 20/11', 'Sexta, 20/11, é feriado da Consciência Negra. A ilha enche e os beach clubs costumam fazer evento.'],
+    ['Warung fechou', 'O Warung Beach Club encerrou na Praia Brava, em Itajaí, em 6/6/2026. Pra eletrônica grande, olhe Greenvalley e Surreal Park, em Camboriú.']]],
+  ['Noite', 'samba', [
+    ['Samba muda de dia', 'Roda de samba muda de dia e horário com frequência. Olhe o Instagram da casa no dia.'],
+    ['Pagode no Norte', 'Não achamos casa com noite fixa de pagode no Norte da Ilha. O samba firme fica no Centro, na Lagoa, em Santo Antônio e em Canasvieiras.'],
+    ['Reserve', 'Getúlio Secreto (30 lugares), Rosso e Ostradamus pedem reserva.']]]
+];
+
+const CREDITS = {"lagoinha":{"a":"Papa Pic from Eldorado, Argentina","l":"CC0","u":"https://commons.wikimedia.org/wiki/File:Atardeceres_da_Lagoinha_(16905969676).jpg"},"brava":{"a":"Mariordo (Mario Roberto Durán Ortiz)","l":"CC BY-SA 4.0","u":"https://commons.wikimedia.org/wiki/File:Floripa_12_2014_Brava_1079.JPG"},"santinho":{"a":"Mariordo Mario Roberto Duran Ortiz","l":"CC BY-SA 3.0","u":"https://commons.wikimedia.org/wiki/File:Ilha_Santa_Catarina_20_Praia_Santinho.JPG"},"ingleses":{"a":"Andreia Reis from São Paulo, Brasil","l":"CC BY 2.0","u":"https://commons.wikimedia.org/wiki/File:Praia_dos_Ingleses_(5378358433).jpg"},"cachoeira":{"a":"SergioCamargos","l":"CC BY-SA 4.0","u":"https://commons.wikimedia.org/wiki/File:Cachoeira_do_Bom_Jesus_-_Florianopolis.jpg"},"jurere":{"a":"Rafael Bernardino Mattei","l":"CC BY-SA 3.0","u":"https://commons.wikimedia.org/wiki/File:Praia_de_Jurer%C3%AA_Internacional_(cropped).JPG"},"forte":{"a":"Rodrigobagini","l":"CC BY-SA 4.0","u":"https://commons.wikimedia.org/wiki/File:Vista_incr%C3%ADvel_do_mar_da_Praia_do_Forte_em_Florian%C3%B3polis,_Santa_Catarina.jpg"},"mole":{"a":"Chamuscajr","l":"CC BY-SA 4.0","u":"https://commons.wikimedia.org/wiki/File:Praia_Mole_Florian%C3%B3polis.jpg"},"piscinas":{"a":"Luis Paulo Vinatea Barberena","l":"Public domain","u":"https://commons.wikimedia.org/wiki/File:Pscinas.JPG"},"campeche":{"a":"Luluhgomes","l":"CC BY-SA 4.0","u":"https://commons.wikimedia.org/wiki/File:Ilha_do_Campeche_um_lugar_intoc%C3%A1vel.jpg"},"bombinhas":{"a":"MTur Destinos","l":"Public domain","u":"https://commons.wikimedia.org/wiki/File:Renato_Soares_Praia_da_Sepultura_Bombinhas_SC_(41539996032).jpg"},"c_ingleses":{"a":"Cleison Cipriani","l":"CC BY-SA 3.0","u":"https://commons.wikimedia.org/wiki/File:Praia_dos_ingleses_-_panoramio.jpg"},"c_canas":{"a":"Amanda Likes","l":"CC BY-SA 4.0","u":"https://commons.wikimedia.org/wiki/File:Escunas_em_Canasvieiras,_Florianopolis,_SC.jpg"},"c_jurere":{"a":"Josue Marinho","l":"CC BY 3.0","u":"https://commons.wikimedia.org/wiki/File:Florian%C3%B3polis_SC_Brasil_-_Jurer%C3%AA_Internacional_-_panoramio.jpg"},"c_santo":{"a":"Ajmcbarreto","l":"CC BY-SA 4.0","u":"https://commons.wikimedia.org/wiki/File:Santo_Ant%C3%B4nio_de_Lisboa_(Floripa)_by_K%C3%A1tiia_C._Oliveira_-_09.jpg"},"c_lagoa":{"a":"Ezarate","l":"CC BY-SA 4.0","u":"https://commons.wikimedia.org/wiki/File:ViewLagoadaConceicao-feb2015.JPG"},"c_barra":{"a":"Larissa Fraga","l":"CC BY 3.0","u":"https://commons.wikimedia.org/wiki/File:Canal_da_Barra_da_Lagoa_-_panoramio.jpg"},"c_centro":{"a":"Thaismay","l":"CC BY-SA 4.0","u":"https://commons.wikimedia.org/wiki/File:Ponte_Herc%C3%ADlio_Luz_de_noite_(02).jpg"},"c_ribeirao":{"a":"Rafael Abreu Rojas","l":"CC BY-SA 4.0","u":"https://commons.wikimedia.org/wiki/File:Fachada_de_casa_azul_em_Ribeir%C3%A3o_da_Ilha-2.jpg"},"box32":{"a":"Luluhgomes","l":"CC BY-SA 4.0","u":"https://commons.wikimedia.org/wiki/File:Mercado_P%C3%BAblico_um_lugar_imperd%C3%ADvel_com_toda_sua_import%C3%A2ncia_hist%C3%B3rica.jpg"}};
+
+// mapa: mesma projecao usada pra gerar o contorno da ilha
+const LON0 = -48.6, LAT0 = -27.36, K = 2000, C = Math.cos(27.6 * Math.PI / 180);
+const VIEWS = { n: [95, 28, 320, 200], i: [0, 25, 470, 950] };
+const OL = {
+  n: [['Oceano Atlântico', -27.40, -48.385], ['Baía Norte', -27.40, -48.53]],
+  i: [['Oceano<br>Atlântico', -27.53, -48.37], ['Baía Norte', -27.46, -48.565], ['Baía Sul', -27.70, -48.574]]
+};
+
+const $ = s => document.querySelector(s);
+const K_SAVE = 'floripa-ingleses-salvos';
+let saved;
+try { saved = new Set(JSON.parse(localStorage.getItem(K_SAVE)) || []); } catch (e) { saved = new Set(); }
+let cat = 'all', vibe = null, view = 'n', day = new Date().getDay();
+const today = day;
+
+const vibeOk = p => !vibe || (vibe === 'salvos' ? saved.has(p.id) : p.g.includes(vibe));
+const visible = p => (cat === 'all' || p.c === cat) && vibeOk(p);
+const maps = q => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
+const thumb = p => p.p ? `<img src="img/${p.p}.jpg" alt="" loading="lazy" decoding="async">` : icon(p.c);
+
+// filtros
+$('#tabs').innerHTML = [['all', 'Tudo'], ...Object.entries(CAT).map(([k, v]) => [k, v[0]])].map(([k, label]) =>
+  `<button class="tab" type="button" data-cat="${k}" aria-pressed="${k === cat}"${k !== 'all' ? ` style="--c:${CAT[k][1]}"` : ''}>${k !== 'all' ? icon(k) : ''}${label}<small></small></button>`).join('');
+$('#vibes').innerHTML = [...Object.entries(TAGS), ['salvos', '★ Salvos']].map(([k, label]) =>
+  `<button class="vibe" type="button" data-vibe="${k}" aria-pressed="false">${label}</button>`).join('');
+
+function renderList() {
+  document.querySelectorAll('.tab').forEach(t => {
+    const k = t.dataset.cat;
+    t.querySelector('small').textContent = D.filter(p => (k === 'all' || p.c === k) && vibeOk(p)).length;
+  });
+  const vis = D.filter(visible);
+  $('#list').innerHTML = Object.keys(CAT).filter(c => cat === 'all' || c === cat).map(c => {
+    const items = vis.filter(p => p.c === c);
+    if (!items.length) return '';
+    return `<section class="group"><h3 style="--c:${CAT[c][1]}">${icon(c)}${CAT[c][0]}<small>${items.length}</small></h3><div class="items">${items.map(p => `
+      <button class="item" type="button" data-open="${p.id}">
+        <span class="thumb" style="--c:${CAT[p.c][1]}">${thumb(p)}</span>
+        <span><span class="item-name">${p.n}</span><span class="item-meta">${REG[p.r][0]} · <span class="t">${p.t}</span></span><span class="item-desc">${p.d}</span></span>
+        ${saved.has(p.id) ? '<span class="item-star" aria-label="Salvo">★</span>' : ''}
+      </button>`).join('')}</div></section>`;
+  }).join('') || `<p class="empty">${vibe === 'salvos' ? 'Nada salvo ainda. Abra um lugar e toque em Salvar (fica guardado só neste aparelho).' : 'Nenhum lugar com esse filtro.'}</p>`;
+}
+
+function pos(lat, lon) {
+  const [vx, vy, vw, vh] = VIEWS[view];
+  const x = (lon - LON0) * C * K, y = (LAT0 - lat) * K;
+  return `left:${((x - vx) / vw * 100).toFixed(2)}%;top:${((y - vy) / vh * 100).toFixed(2)}%`;
+}
+function renderMap() {
+  const [vx, vy, vw, vh] = VIEWS[view];
+  $('#map').setAttribute('viewBox', `${vx} ${vy} ${vw} ${vh}`);
+  $('#stage').style.setProperty('--vw', vw);
+  $('#stage').style.setProperty('--vh', vh);
+  document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === view));
+  const cnt = {};
+  D.filter(visible).forEach(p => { cnt[p.r] = (cnt[p.r] || 0) + 1; });
+  let h = '';
+  for (const [id, [name, lat, lon, , zone, , short]] of Object.entries(REG)) {
+    if (zone === 'x' || (view === 'n') !== (zone === 'n')) continue;
+    const n = cnt[id] || 0, home = id === 'ingleses';
+    if (!n && !home) continue;
+    h += `<button class="pin${home ? ' home' : ''}${view === 'i' && id === 'barra' ? ' side' : ''}" type="button" data-r="${id}" style="${pos(lat, lon)}" aria-expanded="false" aria-label="${name}: ${n} lugares"><b>${n || '⌂'}</b><span>${home ? 'Ingleses · vocês' : short || name}</span></button>`;
+  }
+  if (view === 'i') {
+    const n = Object.keys(REG).filter(r => REG[r][4] === 'n').reduce((s, r) => s + (cnt[r] || 0), 0);
+    h += `<button class="pin zone" type="button" data-zone="n" style="${pos(-27.42, -48.46)}" aria-label="Norte da Ilha: ${n} lugares. Ampliar"><b>${n}</b><span>Norte da Ilha ↗</span></button>`;
+  }
+  h += OL[view].map(([t, lat, lon]) => `<span class="olabel" style="${pos(lat, lon)}">${t}</span>`).join('');
+  $('#pins').innerHTML = h;
+  $('#offmap').innerHTML = Object.entries(REG).filter(([id, r]) => r[4] === 'x' && cnt[id]).map(([id, r]) =>
+    `<button class="bomb" type="button" data-r="${id}" aria-expanded="false">↑ ${r[0]} · ${r[3].split(',')[0]}</button>`).join('');
+  if ($('#offmap').innerHTML) $('#offmap').insertAdjacentHTML('afterbegin', '<span>Fora do mapa:</span>');
+}
+
+// balao
+const balloon = $('#balloon');
+let anchor = null;
+function closeBalloon() {
+  balloon.hidden = true;
+  if (anchor) anchor.setAttribute('aria-expanded', 'false');
+  anchor = null;
+}
+function openBalloon(el) {
+  if (anchor === el) return closeBalloon();
+  closeBalloon();
+  const rid = el.dataset.r, [name, , , time, , img] = REG[rid];
+  const places = D.filter(p => p.r === rid && visible(p));
+  balloon.innerHTML = `<div class="bl-head">${img ? `<img src="img/${img}.jpg" alt="">` : ''}<div><strong>${name}</strong><span class="t">${time}</span></div><button class="bl-x" type="button" aria-label="Fechar">×</button></div>
+    <ul>${places.map(p => `<li><button type="button" data-open="${p.id}"><i style="--c:${CAT[p.c][1]}"></i>${p.n}<small>${CAT[p.c][0]}</small></button></li>`).join('')}</ul>`;
+  balloon.hidden = false;
+  anchor = el;
+  el.setAttribute('aria-expanded', 'true');
+  const fr = $('#frame').getBoundingClientRect(), pr = (el.querySelector('b') || el).getBoundingClientRect();
+  const px = pr.left + pr.width / 2 - fr.left, py = pr.top + pr.height / 2 - fr.top;
+  const bw = balloon.offsetWidth, bh = balloon.offsetHeight;
+  const left = Math.min(Math.max(px - bw / 2, 8), fr.width - bw - 8);
+  const down = py < fr.height / 2;
+  balloon.style.left = left + 'px';
+  balloon.style.top = (down ? py + pr.height / 2 + 12 : py - pr.height / 2 - 12 - bh) + 'px';
+  balloon.style.setProperty('--tx', (px - left) + 'px');
+  balloon.classList.toggle('down', down);
+  balloon.classList.toggle('up', !down);
+}
+
+// ficha
+const sheet = $('#sheet');
+function openSheet(id) {
+  const p = byId[id], col = CAT[p.c][1];
+  sheet.innerHTML = `<form method="dialog"><button class="sh-close" aria-label="Fechar">×</button></form>
+    ${p.p ? `<img class="sh-img" src="img/${p.p}.jpg" alt="Foto de ${p.n}">` : `<div class="sh-band" style="--c:${col}">${icon(p.c)}</div>`}
+    <div class="sh-body">
+      <span class="sh-cat" style="--c:${col}">${icon(p.c)}${CAT[p.c][0]}</span>
+      <h3 id="sh-title">${p.n}</h3>
+      <p class="sh-meta">${p.w} · <span class="t">${p.t}</span></p>
+      <div class="tags">${p.g.map(t => `<span class="tag${t === 'sol' ? ' sol' : ''}">${TAGS[t]}</span>`).join('')}</div>
+      <p>${p.d}</p>
+      ${p.q ? `<div class="when"><b>Quando e dica</b>${p.q}</div>` : ''}
+      <div class="actions">
+        <a class="btn primary" href="${maps(p.m)}" target="_blank" rel="noopener">Abrir no Google Maps ↗</a>
+        <button class="btn" type="button" data-save="${p.id}">${saved.has(p.id) ? '★ Salvo' : '☆ Salvar'}</button>
+        <button class="btn" type="button" data-locate="${p.id}">Ver no mapa</button>
+      </div>
+    </div>`;
+  closeBalloon();
+  if (!sheet.open) sheet.showModal();
+}
+
+function locate(id) {
+  const rid = byId[id].r, zone = REG[rid][4];
+  sheet.close();
+  cat = 'all'; vibe = null;
+  syncFilters();
+  if (zone !== 'x') view = zone;
+  renderMap();
+  $('.map-card').scrollIntoView({ block: 'center' });
+  const el = document.querySelector(`${zone === 'x' ? '.bomb' : '.pin'}[data-r="${rid}"]`);
+  if (el) requestAnimationFrame(() => openBalloon(el));
+}
+
+function syncFilters() {
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-pressed', t.dataset.cat === cat));
+  document.querySelectorAll('.vibe').forEach(v => v.setAttribute('aria-pressed', v.dataset.vibe === vibe));
+  renderList();
+}
+
+// agenda, destaques, roteiros, dicas, creditos
+function renderAgenda() {
+  $('#days').innerHTML = [1, 2, 3, 4, 5, 6, 0].map(d =>
+    `<button class="day${d === today ? ' today' : ''}" type="button" data-day="${d}" aria-pressed="${d === day}">${DN[d]}<small>${AG[d].length}</small></button>`).join('');
+  $('#aglist').innerHTML = AG[day].map(([id, time, note]) => {
+    const p = byId[id];
+    return `<button class="ag" type="button" data-open="${id}"><time>${time}</time><span><b>${p.n}</b><small>${note || REG[p.r][0]} · ${p.t}</small></span></button>`;
+  }).join('') || '<p class="empty">Segunda é dia fraco pra samba. Vá de praia, pôr do sol e jantar.</p>';
+}
+$('#picks').innerHTML = PICKS.map(([img, label, title, id]) =>
+  `<button class="pick" type="button" data-open="${id}"><img src="img/${img}.jpg" alt="" loading="lazy" decoding="async"><span><small>${label}</small><strong>${title}</strong></span></button>`).join('');
+$('#events').innerHTML = EVENTS.map(([date, dow, hour, title, id]) =>
+  `<button class="ag" type="button" data-open="${id}"><time>${date}<small>${dow}</small></time><span><b>${title}</b><small>${byId[id].n} · ${hour}</small></span></button>`).join('');
+const links = s => s.replace(/\{(\w+)\|([^}]+)\}/g, '<button class="lnk" type="button" data-open="$1">$2</button>');
+$('#routes').innerHTML = ROUTES.map(([t, sub, img, steps]) =>
+  `<article class="route"><img src="img/${img}.jpg" alt="" loading="lazy" decoding="async"><div class="route-body"><div><h3>${t}</h3><p>${sub}</p></div><ol>${steps.map(([w, s]) => `<li><b>${w}</b><span>${links(s)}</span></li>`).join('')}</ol></div></article>`).join('');
+$('#tips').innerHTML = TIPS.map(([t, c, items]) =>
+  `<div class="tg"><h3 style="--c:${CAT[c][1]}">${icon(c)}${t}</h3><div class="bubbles">${items.map(([label, text]) => `<details class="tip"><summary>${label}</summary><p>${text}</p></details>`).join('')}</div></div>`).join('');
+const who = id => (D.find(p => p.p === id) || {}).n || id;
+$('#credits').innerHTML = Object.entries(CREDITS).map(([id, c]) => `<li><a href="${c.u}" target="_blank" rel="noopener">${who(id)}</a>: ${c.a}, ${c.l}</li>`).join('');
+
+// eventos
+document.addEventListener('click', e => {
+  const t = e.target;
+  const open = t.closest('[data-open]');
+  if (open) return openSheet(open.dataset.open);
+  const pin = t.closest('.pin, .bomb');
+  if (pin) {
+    if (pin.dataset.zone) { view = 'n'; closeBalloon(); return renderMap(); }
+    return openBalloon(pin);
+  }
+  if (t.closest('.bl-x')) return closeBalloon();
+  const v = t.closest('[data-view]');
+  if (v) { view = v.dataset.view; closeBalloon(); return renderMap(); }
+  const tab = t.closest('[data-cat]');
+  if (tab) { cat = tab.dataset.cat; closeBalloon(); syncFilters(); return renderMap(); }
+  const vb = t.closest('[data-vibe]');
+  if (vb) { vibe = vibe === vb.dataset.vibe ? null : vb.dataset.vibe; closeBalloon(); syncFilters(); return renderMap(); }
+  const d = t.closest('[data-day]');
+  if (d) { day = +d.dataset.day; return renderAgenda(); }
+  const s = t.closest('[data-save]');
+  if (s) {
+    const id = s.dataset.save;
+    saved.has(id) ? saved.delete(id) : saved.add(id);
+    try { localStorage.setItem(K_SAVE, JSON.stringify([...saved])); } catch (err) {}
+    s.textContent = saved.has(id) ? '★ Salvo' : '☆ Salvar';
+    renderList(); renderMap();
+    return;
+  }
+  const loc = t.closest('[data-locate]');
+  if (loc) return locate(loc.dataset.locate);
+  if (anchor && !t.closest('#balloon')) closeBalloon();
+});
+sheet.addEventListener('click', e => { if (e.target === sheet) sheet.close(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && anchor) closeBalloon(); });
+addEventListener('resize', () => { if (anchor) closeBalloon(); });
+
+renderList();
+renderMap();
+renderAgenda();
+</script>
