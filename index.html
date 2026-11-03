@@ -110,7 +110,7 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -.
 #pins { position: absolute; inset: 0; }
 .pin { position: absolute; z-index: var(--z-pin); transform: translate(-50%, -15px); display: flex; flex-direction: column; align-items: center; gap: 3px; border: 0; padding: 0; background: none; cursor: pointer; }
 .pin b { min-width: 30px; height: 30px; padding: 0 7px; border-radius: 999px; display: grid; place-items: center; background: var(--surface); color: var(--sea); border: 2px solid var(--sea); font-size: .85rem; font-weight: 700; box-shadow: 0 5px 12px -3px rgba(6, 40, 52, .5); transition: transform .15s ease; }
-.pin span { font-size: .75rem; font-weight: 600; white-space: nowrap; color: var(--ink); background: rgba(255, 255, 255, .88); padding: 1px 6px; border-radius: 6px; }
+.pin span { font-size: .75rem; font-weight: 600; white-space: nowrap; color: var(--ink); background: rgba(255, 255, 255, .9); padding: 2px 8px; border-radius: 6px; }
 .pin.side { flex-direction: row; transform: translate(-15px, -15px); }
 .pin:hover b { transform: scale(1.12); }
 .pin[aria-expanded="true"] b { background: var(--sea); color: #fff; }
@@ -198,7 +198,7 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -.
 .days { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
 .day { flex: none; position: relative; width: 60px; padding: 9px 0 7px; display: grid; justify-items: center; gap: 1px; border-radius: var(--r-md); border: 1px solid var(--line); background: var(--surface); font-weight: 700; cursor: pointer; transition: background .2s; }
 .day small { font: 500 .75rem var(--mono); color: var(--muted); }
-.day.today::before { content: "hoje"; position: absolute; top: -9px; padding: 0 6px; border-radius: 999px; background: var(--ink); color: #fff; font: 500 .75rem var(--mono); }
+.day.today::before { content: "hoje"; position: absolute; top: -10px; padding: 2px 8px; border-radius: 999px; background: var(--ink); color: #fff; font: 500 .75rem var(--mono); }
 .day[aria-pressed="true"] { background: var(--sun); border-color: var(--sun); color: var(--sun-ink); }
 .day[aria-pressed="true"] small { color: var(--sun-ink); }
 .ag-list { display: grid; gap: 10px; margin-top: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); }
