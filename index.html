@@ -77,6 +77,7 @@ h1 { font-size: clamp(2.7rem, 9vw, 5.6rem); font-weight: 800; line-height: .95; 
 .pick:hover img { transform: scale(1.05); }
 .pick:active { transform: scale(.98); }
 
+body:has(.sheet[open]) { overflow: hidden; }
 main { display: grid; gap: 64px; padding-block: 36px 64px; }
 main > *, .platform > * { min-width: 0; }
 section { scroll-margin-top: 70px; }
@@ -95,10 +96,11 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -.
 .map-tools { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .seg { display: inline-flex; background: var(--sea-soft); border-radius: 999px; padding: 3px; }
 .seg button { border: 0; background: none; padding: 6px 14px; border-radius: 999px; font-weight: 600; font-size: .88rem; color: var(--sea); cursor: pointer; transition: background .2s; }
+.seg small { font: 500 .75rem var(--mono); opacity: .75; }
 .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 4px rgba(13, 79, 107, .25); }
 .hint { font-size: .82rem; color: var(--muted); }
 .map-frame { position: relative; margin-top: 10px; }
-.ocean { border-radius: var(--r-md); overflow: hidden; display: grid; place-items: center;
+.ocean { position: relative; border-radius: var(--r-md); overflow: hidden; display: grid; place-items: center;
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='22'%3E%3Cpath d='M0 11c8 0 8-5 16-5s8 5 16 5 8-5 16-5 8 5 16 5' fill='none' stroke='%23fff' stroke-opacity='.16' stroke-width='1.4'/%3E%3C/svg%3E"),
     radial-gradient(130% 90% at 75% 15%, #4FCBD3 0%, #1E9FB2 45%, #0E6D8A 100%); }
@@ -108,6 +110,8 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -.
 .land { fill: var(--sand); stroke: var(--sand-line); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .lagoon { fill: #63CAD2; stroke: var(--sand-line); stroke-width: 1; vector-effect: non-scaling-stroke; }
 #pins { position: absolute; inset: 0; }
+.map-empty { position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: var(--z-balloon); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; padding: 10px 14px; border-radius: var(--r-md); background: rgba(255, 255, 255, .96); font-size: .9rem; box-shadow: 0 8px 20px -10px rgba(6, 40, 52, .5); }
+.map-empty .btn { padding: 7px 13px; font-size: .86rem; }
 .pin { position: absolute; z-index: var(--z-pin); transform: translate(-50%, -15px); display: flex; flex-direction: column; align-items: center; gap: 3px; border: 0; padding: 0; background: none; cursor: pointer; }
 .pin b { min-width: 30px; height: 30px; padding: 0 7px; border-radius: 999px; display: grid; place-items: center; background: var(--surface); color: var(--sea); border: 2px solid var(--sea); font-size: .85rem; font-weight: 700; box-shadow: 0 5px 12px -3px rgba(6, 40, 52, .5); transition: transform .15s ease; }
 .pin span { font-size: .75rem; font-weight: 600; white-space: nowrap; color: var(--ink); background: rgba(255, 255, 255, .9); padding: 2px 8px; border-radius: 6px; }
@@ -126,6 +130,7 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -.
 /* balao do mapa */
 .balloon { position: absolute; z-index: var(--z-balloon); width: min(290px, calc(100% - 16px)); background: var(--surface); border-radius: var(--r-md); box-shadow: 0 20px 44px -14px rgba(6, 40, 52, .55); }
 .balloon::after { content: ""; position: absolute; left: var(--tx, 50%); width: 14px; height: 14px; background: var(--surface); transform: translateX(-50%) rotate(45deg); }
+.balloon.dock { position: relative; width: 100%; margin-top: 12px; box-shadow: 0 10px 28px -14px rgba(6, 40, 52, .55); }
 .balloon.down::after { top: -6px; }
 .balloon.up::after { bottom: -6px; }
 @media (prefers-reduced-motion: no-preference) { .balloon { animation: pop .18s ease-out; } }
@@ -166,6 +171,7 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -.
 .item-desc { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 2px; font-size: .86rem; color: var(--muted); }
 .item-star { color: #9A6D00; padding-right: 4px; }
 .empty { color: var(--muted); padding: 24px 4px; margin: 0; }
+.status { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 14px; padding: 10px 14px; border-radius: var(--r-md); background: var(--sea-soft); font-size: .9rem; }
 
 /* ficha */
 .sheet { border: 0; padding: 0; width: min(560px, 100%); max-width: 100%; max-height: 90dvh; margin: auto auto 0; border-radius: var(--r-lg) var(--r-lg) 0 0; background: var(--surface); color: var(--ink); overflow: auto; overscroll-behavior: contain; }
@@ -244,6 +250,12 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 36px; color: var
 .more ul { margin: 10px 0 0; padding-left: 18px; columns: 2 300px; }
 .more li { break-inside: avoid; margin-bottom: 4px; }
 .more a { color: var(--sea); }
+/* desktop: destaques e roteiros em grade, sem rolagem lateral com mouse */
+@media (min-width: 900px) {
+  .picks { grid-auto-flow: row; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow: visible; }
+  .pick { height: 220px; }
+  .routes { grid-auto-flow: row; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: visible; }
+}
 </style>
 
 <div class="top">
@@ -283,10 +295,10 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 36px; color: var
         <div class="map-card">
           <div class="map-tools">
             <div class="seg" role="group" aria-label="Área do mapa">
-              <button type="button" data-view="n" aria-pressed="true">Norte da Ilha</button>
-              <button type="button" data-view="i" aria-pressed="false">Ilha toda</button>
+              <button type="button" data-view="n" aria-pressed="true">Norte da Ilha <small id="cn"></small></button>
+              <button type="button" data-view="i" aria-pressed="false">Ilha toda <small id="ci"></small></button>
             </div>
-            <span class="hint">Toque num balão</span>
+            <span class="hint">O número é quantos lugares tem ali</span>
           </div>
           <div class="map-frame" id="frame">
             <div class="ocean">
@@ -299,9 +311,10 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 36px; color: var
                 </svg>
                 <div id="pins"></div>
               </div>
+              <div class="map-empty" id="mapempty" hidden></div>
             </div>
-            <div class="offmap" id="offmap"></div>
             <div class="balloon" id="balloon" role="dialog" aria-label="Lugares da região" hidden></div>
+            <div class="offmap" id="offmap"></div>
           </div>
         </div>
       </div>
@@ -406,7 +419,7 @@ const CAT = {
   balada: ['Balada', '#7A4FD0', '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>']
 };
 const icon = c => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${CAT[c][2]}</svg>`;
-const TAGS = { azul: 'Água azul', bonita: 'Gente bonita', animado: 'Animado', tranq: 'Tranquilo', sofis: 'Sofisticado', barato: 'Barato', perto: 'Pertinho', sol: 'Pôr do sol' };
+const TAGS = { azul: 'Água azul', animado: 'Animado', tranq: 'Tranquilo', sofis: 'Sofisticado', barato: 'Barato', perto: 'Pertinho', sol: 'Pôr do sol' };
 
 // regiao: [nome, lat, lon, tempo dos Ingleses, zona (n norte, i ilha, x fora do mapa), foto, rotulo curto]
 const REG = {
@@ -436,7 +449,7 @@ const D = [
   { id: 'lagoinha', c: 'praia', r: 'lagoinha', p: 'lagoinha', n: 'Lagoinha', w: 'Ponta das Canas', t: '15 min', g: ['azul', 'tranq', 'perto'], m: 'Praia da Lagoinha, Ponta das Canas' + F,
     d: 'Enseada pequena cercada de mata, quase sem onda, água verde-azulada e areia branca. A água mais clara do Norte da Ilha.',
     q: 'Vá cedo: a faixa de areia é curta e enche rápido no fim de semana.' },
-  { id: 'brava', c: 'praia', r: 'brava', p: 'brava', n: 'Praia Brava', w: 'Depois do canto norte dos Ingleses', t: '15 min', g: ['bonita', 'perto'], m: 'Praia Brava' + F,
+  { id: 'brava', c: 'praia', r: 'brava', p: 'brava', n: 'Praia Brava', w: 'Depois do canto norte dos Ingleses', t: '15 min', g: ['perto'], m: 'Praia Brava' + F,
     d: 'Areia larga, mar de surfe e galera jovem e bonita. Na pré-temporada tem pouco quiosque, então leve água e petisco.',
     q: 'Dá pra ir a pé pela Trilha da Feiticeira, do fim da Rua das Gaivotas: 40 min a 1h, de tênis, com pedra. Não entre no mar na foz do rio, no começo da trilha.' },
   { id: 'santinho', c: 'praia', r: 'santinho', p: 'santinho', n: 'Praia do Santinho', w: 'Vizinha, pelo canto sul', t: '5 min', g: ['tranq', 'perto', 'sol'], m: 'Praia do Santinho' + F,
@@ -448,19 +461,19 @@ const D = [
   { id: 'cachoeira', c: 'praia', r: 'cachoeira', p: 'cachoeira', n: 'Cachoeira do Bom Jesus', w: 'Norte da Ilha', t: '10 min', g: ['tranq', 'barato', 'perto'], m: 'Praia da Cachoeira do Bom Jesus' + F,
     d: 'Mar manso e raso, pouca gente fora da temporada. Cadeira, guarda-sol e cerveja gelada sem estresse.',
     q: 'Própria no boletim do IMA de 29/10. Na vizinha Ponta das Canas, o ponto da lagoa estava impróprio.' },
-  { id: 'jurere', c: 'praia', r: 'jurere', p: 'jurere', n: 'Jurerê Internacional', w: 'Norte da Ilha', t: '20 min', g: ['bonita', 'sofis', 'tranq'], m: 'Praia de Jurerê Internacional' + F,
+  { id: 'jurere', c: 'praia', r: 'jurere', p: 'jurere', n: 'Jurerê Internacional', w: 'Norte da Ilha', t: '20 min', g: ['sofis', 'tranq'], m: 'Praia de Jurerê Internacional' + F,
     d: 'A praia chique da ilha: casarões, beach clubs e gente bonita. Mar calmo de baía.',
     q: 'Fora do verão fica tranquila: ótima pra caminhar na orla e almoçar sem fila.' },
   { id: 'forte', c: 'praia', r: 'forte', p: 'forte', n: 'Praia do Forte e Daniela', w: 'Ponta noroeste', t: '25 min', g: ['tranq', 'sol'], m: 'Praia do Forte' + F,
     d: 'Mar de baía sem onda e a Fortaleza de São José da Ponta Grossa no morro. Das praias mais calmas da ilha.',
     q: 'Fique pro fim de tarde: o sol se põe do lado do continente.' },
-  { id: 'mole', c: 'praia', r: 'mole', p: 'mole', n: 'Praia Mole', w: 'Leste, perto da Lagoa', t: '30 min', g: ['bonita', 'animado'], m: 'Praia Mole' + F,
+  { id: 'mole', c: 'praia', r: 'mole', p: 'mole', n: 'Praia Mole', w: 'Leste, perto da Lagoa', t: '30 min', g: ['animado'], m: 'Praia Mole' + F,
     d: 'Ponto de encontro de surfista e galera bonita, areia grossa e clima descolado. Mar forte e água mais fria.',
     q: 'Fim de tarde no Bar da Deca, ali na areia.' },
   { id: 'piscinas', c: 'praia', r: 'barra', p: 'piscinas', n: 'Piscinas naturais da Barra', w: 'Barra da Lagoa', t: '25 min', g: ['azul', 'barato'], m: 'Piscinas Naturais da Barra da Lagoa' + F,
     d: 'Uns 600 m de trilha pelo costão levam a piscinas de água cristalina entre as pedras. Na volta, banho na Prainha.',
     q: 'As piscinas só se formam com mar calmo. Começa no fim da Servidão da Prainha. Sem sombra: boné e protetor. Não pule das pedras.' },
-  { id: 'campeche', c: 'praia', r: 'campeche', p: 'campeche', n: 'Ilha do Campeche', w: 'Barco do Campeche, Barra da Lagoa ou Armação', t: '20 a 50 min até o barco', g: ['azul', 'bonita'], m: 'Ilha do Campeche' + F,
+  { id: 'campeche', c: 'praia', r: 'campeche', p: 'campeche', n: 'Ilha do Campeche', w: 'Barco do Campeche, Barra da Lagoa ou Armação', t: '20 a 50 min até o barco', g: ['azul'], m: 'Ilha do Campeche' + F,
     d: 'O Caribe catarinense: água turquesa, areia branquíssima e trilhas com arte rupestre. A água mais azul da viagem.',
     q: 'Pela Armação: R$ 170 até 30/11, 30 min de barco, saída 9h30. Pela Barra da Lagoa, mais perto de vocês: R$ 250 a R$ 350, 1h10 de barco. Mais R$ 15 de ingresso. Reserve, leve dinheiro e documento. Até 4h na ilha, limite de 800 pessoas por dia.' },
   { id: 'bombinhas', c: 'praia', r: 'bombinhas', p: 'bombinhas', n: 'Bombinhas', w: 'Fora da ilha, rumo norte pela BR-101', t: '1h45', g: ['azul', 'tranq'], m: 'Praia da Sepultura, Bombinhas',
@@ -474,13 +487,13 @@ const D = [
   { id: 'c_canas', c: 'passeio', r: 'canas', p: 'c_canas', n: 'Centrinho de Canasvieiras', w: 'Canasvieiras', t: '15 min', g: ['perto', 'animado', 'barato'], m: 'Canasvieiras' + F,
     d: 'O centrinho mais movimentado do Norte, cheio de turista argentino: restaurantes, bares com música ao vivo e as escunas saindo da praia.',
     q: 'Junte com a roda do Giro Floripa à noite.' },
-  { id: 'c_jurere', c: 'passeio', r: 'jurere', p: 'c_jurere', n: 'Jurerê Internacional', w: 'Jurerê Open Shopping e orla', t: '20 min', g: ['sofis', 'bonita', 'tranq'], m: 'Jurerê Open Shopping' + F,
+  { id: 'c_jurere', c: 'passeio', r: 'jurere', p: 'c_jurere', n: 'Jurerê Internacional', w: 'Jurerê Open Shopping e orla', t: '20 min', g: ['sofis', 'tranq'], m: 'Jurerê Open Shopping' + F,
     d: 'Ruas arborizadas, casarões e o Open Shopping, centro comercial a céu aberto perto da praia, com restaurantes e lojas.',
     q: 'Open Shopping na Av. dos Búzios, 1800: seg a sáb, 10h às 20h. Domingo, restaurantes das 12h às 20h.' },
   { id: 'c_santo', c: 'passeio', r: 'santo', p: 'c_santo', n: 'Santo Antônio de Lisboa', w: 'Orla e praça da igreja', t: '30 min', g: ['sol', 'tranq', 'sofis'], m: 'Santo Antônio de Lisboa' + F,
     d: 'Casario açoriano, a Igreja de Nossa Senhora das Necessidades e lojinhas de cerâmica e renda de bilro na praça. Restaurantes na beira da baía.',
     q: 'No fim de semana tem a Feira das Alfaias. Chegue antes do pôr do sol, ande pela Rua XV de Novembro e fique pro jantar.' },
-  { id: 'c_lagoa', c: 'passeio', r: 'lagoa', p: 'c_lagoa', n: 'Centrinho da Lagoa', w: 'Av. das Rendeiras e ruas perto da ponte', t: '40 min', g: ['animado', 'bonita'], m: 'Centrinho da Lagoa da Conceição' + F,
+  { id: 'c_lagoa', c: 'passeio', r: 'lagoa', p: 'c_lagoa', n: 'Centrinho da Lagoa', w: 'Av. das Rendeiras e ruas perto da ponte', t: '40 min', g: ['animado'], m: 'Centrinho da Lagoa da Conceição' + F,
     d: 'O centrinho mais boêmio da ilha: bares, restaurantes e baladas em volta da Lagoa.',
     q: 'Movimento forte de quinta a sábado. Pra voltar de madrugada, aplicativo funciona bem.' },
   { id: 'c_barra', c: 'passeio', r: 'barra', p: 'c_barra', n: 'Barra da Lagoa', w: 'Canal e vila de pescadores', t: '25 min', g: ['tranq', 'barato'], m: 'Canal da Barra da Lagoa' + F,
@@ -499,7 +512,7 @@ const D = [
   { id: 'morro', c: 'passeio', r: 'ingleses', n: 'Mirantes do Morro dos Ingleses', w: 'Canto sul dos Ingleses', t: '5 min', g: ['perto', 'sol', 'barato'], m: 'Morro dos Ingleses, trilha' + F,
     d: 'Três trilhas sinalizadas no morro do canto sul, como o Caminho do Engenho (fácil) e o Caminho da Grota (moderado), com mirantes sobre a praia e as dunas.',
     q: 'Suba no fim da tarde e veja o pôr do sol lá de cima.' },
-  { id: 'lagoinhaleste', c: 'praia', r: 'sul', n: 'Matadeiro e Lagoinha do Leste', w: 'Sul da Ilha, por trilha', t: '1h15', g: ['tranq', 'bonita'], m: 'Praia da Lagoinha do Leste' + F,
+  { id: 'lagoinhaleste', c: 'praia', r: 'sul', n: 'Matadeiro e Lagoinha do Leste', w: 'Sul da Ilha, por trilha', t: '1h15', g: ['tranq'], m: 'Praia da Lagoinha do Leste' + F,
     d: 'Praias selvagens do sul, só por trilha. Até a Lagoinha do Leste são 1h a 1h30 de subida a partir do Pântano do Sul.',
     q: 'Tênis, água e lanche. Na volta, peixe no Bar do Arante.' },
 
@@ -545,7 +558,7 @@ const D = [
   { id: 'boni', c: 'bar', r: 'lagoa', n: 'Bar do Boni', w: 'Av. Acácio Garibaldi São Thiago, 67, Lagoa', t: '40 min', g: ['sol', 'animado'], m: 'Bar do Boni, Avenida Prefeito Acácio Garibaldi São Thiago 67' + F,
     d: 'Deck na beira da Lagoa, música ao vivo quase todo dia, petisco de frutos do mar e boa carta de drinks.',
     q: 'Chegue com sol pra ver o pôr do sol da varanda.' },
-  { id: 'deca', c: 'bar', r: 'mole', n: 'Bar da Deca', w: 'Praia Mole', t: '30 min', g: ['animado', 'bonita', 'barato'], m: 'Bar da Deca, Praia Mole' + F,
+  { id: 'deca', c: 'bar', r: 'mole', n: 'Bar da Deca', w: 'Praia Mole', t: '30 min', g: ['animado', 'barato'], m: 'Bar da Deca, Praia Mole' + F,
     d: 'Barulhento e animado, com pastel de camarão e cerveja depois do surfe.',
     q: 'Melhor em fim de tarde de sol.' },
   { id: 'getulio', c: 'bar', r: 'centro', n: 'Getúlio Secreto', w: 'Praça Getúlio Vargas, 158, Centro', t: '45 min', g: ['sofis'], m: 'Getúlio Secreto, Praça Getúlio Vargas' + F,
@@ -557,7 +570,7 @@ const D = [
   { id: 'delfino', c: 'bar', r: 'centro', n: 'Delfino 146', w: 'R. Luís Delfino, 146, Centro', t: '45 min', g: ['sofis', 'tranq'], m: 'Delfino 146, Rua Luís Delfino 146' + F,
     d: 'Café numa casa centenária que esconde um bar no porão, com jazz, soul e MPB ao vivo.',
     q: 'Shows de qui a sáb à noite, até meia-noite.' },
-  { id: 'roof', c: 'balada', r: 'centro', n: 'The Roof', w: '20º andar do Majestic, Beira-Mar Norte', t: '45 min', g: ['sofis', 'animado', 'bonita'], m: 'The Roof, Majestic Palace Hotel' + F,
+  { id: 'roof', c: 'balada', r: 'centro', n: 'The Roof', w: '20º andar do Majestic, Beira-Mar Norte', t: '45 min', g: ['sofis', 'animado'], m: 'The Roof, Majestic Palace Hotel' + F,
     d: 'Balada no alto do hotel, com DJ e vista da baía. Já teve até Pagode no Telhado.',
     q: 'Abre nas sextas à noite, por evento. Veja a agenda no site antes.' },
 
@@ -596,31 +609,31 @@ const D = [
   { id: 'santa', c: 'balada', r: 'lagoa', n: 'Santa Club', w: 'Av. das Rendeiras, 470, Lagoa', t: '40 min', g: ['animado', 'barato'], m: 'Santa Club, Lagoa da Conceição' + F,
     d: 'A balada que segura a noite fora da temporada: pop, funk, reggaeton e eletrônica.',
     q: 'Fim de semana. Ingressos a partir de R$ 20.' },
-  { id: 'p12', c: 'balada', r: 'jurere', n: 'P12', w: 'Jurerê Internacional', t: '20 min', g: ['bonita', 'sofis', 'animado'], m: 'P12 Parador, Jurerê Internacional' + F,
+  { id: 'p12', c: 'balada', r: 'jurere', n: 'P12', w: 'Jurerê Internacional', t: '20 min', g: ['sofis', 'animado'], m: 'P12 Parador, Jurerê Internacional' + F,
     d: 'O beach club mais famoso da ilha, com almoço que vira festa. Em novembro só abre em dia de evento.',
     q: 'Nenhum evento confirmado em novembro. A temporada principal vai de 26/12 a 26/03.' },
-  { id: 'safari', c: 'balada', r: 'jurere', n: 'Safari Beach', w: 'Alameda César Nascimento, 500, Jurerê', t: '20 min', g: ['animado', 'bonita'], m: 'Safari Beach, Jurerê Internacional' + F,
+  { id: 'safari', c: 'balada', r: 'jurere', n: 'Safari Beach', w: 'Alameda César Nascimento, 500, Jurerê', t: '20 min', g: ['animado'], m: 'Safari Beach, Jurerê Internacional' + F,
     d: 'Day club de house e techno, com line-up gringo no verão.',
     q: 'Em 2025 fez festa no feriado da Consciência Negra. Em 2026 o feriado cai na sexta, 20/11: vale olhar a agenda.' },
-  { id: 'cafe', c: 'balada', r: 'jurere', n: 'Café de La Musique', w: 'Jurerê Internacional', t: '20 min', g: ['sofis', 'bonita', 'animado'], m: 'Café de La Musique, Jurerê Internacional' + F,
+  { id: 'cafe', c: 'balada', r: 'jurere', n: 'Café de La Musique', w: 'Jurerê Internacional', t: '20 min', g: ['sofis', 'animado'], m: 'Café de La Musique, Jurerê Internacional' + F,
     d: 'Clássico do verão de Jurerê, no auge entre o Natal e o Ano-Novo.',
     q: 'Agenda 2026/27 ainda sem datas públicas.' },
-  { id: 'posh', c: 'balada', r: 'jurere', n: 'Posh Club', w: 'Jurerê Internacional', t: '20 min', g: ['animado', 'bonita'], m: 'Posh Club, Jurerê Internacional' + F,
+  { id: 'posh', c: 'balada', r: 'jurere', n: 'Posh Club', w: 'Jurerê Internacional', t: '20 min', g: ['animado'], m: 'Posh Club, Jurerê Internacional' + F,
     d: 'A balada noturna de Jurerê, que fez 20 anos em março de 2026 e abre poucas noites por ano.',
     q: 'A abertura da temporada costuma ser no Natal.' },
   { id: 'johnbull', c: 'balada', r: 'lagoa', n: 'John Bull', w: 'Av. das Rendeiras, 1046, Lagoa', t: '40 min', g: ['animado'], m: 'John Bull Floripa, Lagoa da Conceição' + F,
     d: 'Casa de shows de rock, blues e reggae, pra variar o som.',
     q: 'Ingresso varia por show.' },
-  { id: 'milk', c: 'balada', r: 'jurere', n: 'Milk Club', w: 'Jurerê Internacional', t: '20 min', g: ['animado', 'bonita'], m: 'Milk Club, Jurerê Internacional' + F,
+  { id: 'milk', c: 'balada', r: 'jurere', n: 'Milk Club', w: 'Jurerê Internacional', t: '20 min', g: ['animado'], m: 'Milk Club, Jurerê Internacional' + F,
     d: 'Balada de eletrônica em Jurerê. Na sexta, 6/11, tem Petroski das 23h às 7h.',
     q: 'Ingresso a partir de R$ 100 pela Ingresse. A data vem de agenda de eventos: confirme antes.' },
-  { id: 'terraza', c: 'balada', r: 'jurere', n: 'Terraza Music Park', w: 'SC-402, km 1,5, Jurerê', t: '20 min', g: ['animado', 'bonita'], m: 'Terrazza Music Park, Jurerê' + F,
+  { id: 'terraza', c: 'balada', r: 'jurere', n: 'Terraza Music Park', w: 'SC-402, km 1,5, Jurerê', t: '20 min', g: ['animado'], m: 'Terrazza Music Park, Jurerê' + F,
     d: 'Pista ao ar livre de música eletrônica. No sábado, 14/11, BLANCAh faz set longo das 23h às 7h, com Ricardo Lin.',
     q: 'Ingresso a partir de R$ 50 pelo Resident Advisor.' },
   { id: 'surreal', c: 'balada', r: 'camboriu', n: 'Surreal Park', w: 'Av. João da Costa, 3051, Camboriú', t: '1h30', g: ['animado', 'sofis'], m: 'Surreal Park, Avenida João da Costa 3051, Camboriú',
     d: 'Hernan Cattaneo, nome máximo do house progressivo, na sexta do feriado, 20/11, a partir das 22h.',
     q: 'Ingresso pela Blueticket. Fica a 1h30 dos Ingleses: combine motorista ou durma por lá.' },
-  { id: 'greenvalley', c: 'balada', r: 'camboriu', n: 'Greenvalley', w: 'Rio Pequeno, Camboriú', t: '1h30', g: ['animado', 'bonita'], m: 'Green Valley, Camboriú',
+  { id: 'greenvalley', c: 'balada', r: 'camboriu', n: 'Greenvalley', w: 'Rio Pequeno, Camboriú', t: '1h30', g: ['animado'], m: 'Green Valley, Camboriú',
     d: 'Clube que já foi eleito o melhor do mundo pela DJ Mag. No sábado, 21/11, faz festa de aniversário com atração de tech house ainda não divulgada.',
     q: 'As vendas da temporada abrem em 3/11, ao meio-dia, só pra cadastrados no site.' }
 ];
@@ -663,6 +676,7 @@ const ROUTES = [
   ['Dia perto de casa', 'Norte · zero trânsito', 'lagoinha', [['Manhã', '{lagoinha|Lagoinha}, chegando cedo'], ['Almoço', 'Sequência no {aladym|Aladym}'], ['Tarde', 'Trilha da Feiticeira até a {brava|Brava}'], ['Fim de tarde', 'Drink no {beachhouse|Beach House} (fim de semana)'], ['Noite', 'Roda no {giro|Giro Floripa} (qui a sáb)']]],
   ['Sábado de samba', 'Centro · vá de Uber', 'box32', [['12h', '{largo|Samba do Largo}'], ['Tarde', 'Chope no {box32|Box 32}, no Mercado'], ['17h30', 'Roda no {bugio|Bugio Centro}'], ['Noite', '{getulio|Getúlio Secreto} (reserve) ou {noel|Bar do Noel}']]],
   ['Dia chique', 'Norte e baía', 'c_santo', [['Manhã', 'Orla de {jurere|Jurerê Internacional}'], ['Pôr do sol', 'Ostras no {rancho|Rancho Açoriano}'], ['Noite', 'Jantar no {rosso|Rosso}'], ['Se for dom', 'Samba no {bastiao|Rancho do Bastião}']]],
+  ['Dia no Sul', 'Sul da Ilha · saia cedo', 'c_ribeirao', [['Manhã', 'Barco da Armação pra {campeche|Ilha do Campeche}'], ['Almoço', 'Peixe e pirão no {arante|Bar do Arante}'], ['Tarde', 'Casario do {c_ribeirao|Ribeirão da Ilha}'], ['Jantar', 'Ostras no {ostradamus|Ostradamus}']]],
   ['Domingo na Lagoa', 'Leste', 'c_lagoa', [['Tarde', '{mole|Praia Mole} e o {deca|Bar da Deca}'], ['Pôr do sol', '{boni|Bar do Boni}'], ['20h', 'Samba da Castanheira no {pantai|Pantai}']]]
 ];
 
@@ -699,8 +713,9 @@ const $ = s => document.querySelector(s);
 const K_SAVE = 'floripa-ingleses-salvos';
 let saved;
 try { saved = new Set(JSON.parse(localStorage.getItem(K_SAVE)) || []); } catch (e) { saved = new Set(); }
-let cat = 'all', vibe = null, view = 'n', day = new Date().getDay();
-const today = day;
+let cat = 'all', vibe = null, view = 'n';
+const today = new Date().getDay();
+let day = [0, 1, 2, 3, 4, 5, 6].map(i => (today + i) % 7).find(d => AG[d].length);
 
 const vibeOk = p => !vibe || (vibe === 'salvos' ? saved.has(p.id) : p.g.includes(vibe));
 const visible = p => (cat === 'all' || p.c === cat) && vibeOk(p);
@@ -713,22 +728,40 @@ $('#tabs').innerHTML = [['all', 'Tudo'], ...Object.entries(CAT).map(([k, v]) => 
 $('#vibes').innerHTML = [...Object.entries(TAGS), ['salvos', '★ Salvos']].map(([k, label]) =>
   `<button class="vibe" type="button" data-vibe="${k}" aria-pressed="false">${label}</button>`).join('');
 
+function buildList() {
+  $('#list').innerHTML = '<div class="status" id="status" hidden></div>' + Object.keys(CAT).map(c =>
+    `<section class="group" data-group="${c}"><h3 style="--c:${CAT[c][1]}">${icon(c)}${CAT[c][0]}<small></small></h3><div class="items">${D.filter(p => p.c === c).map(p => `
+      <button class="item" type="button" data-open="${p.id}" data-id="${p.id}">
+        <span class="thumb" style="--c:${CAT[p.c][1]}">${thumb(p)}</span>
+        <span><span class="item-name">${p.n}</span><span class="item-meta">${REG[p.r][0]} · <span class="t">${p.t}</span></span><span class="item-desc">${p.d}</span></span>
+        <span class="item-star" aria-label="Salvo" hidden>★</span>
+      </button>`).join('')}</div></section>`).join('') + '<p class="empty" id="empty" hidden></p>';
+}
 function renderList() {
   document.querySelectorAll('.tab').forEach(t => {
     const k = t.dataset.cat;
     t.querySelector('small').textContent = D.filter(p => (k === 'all' || p.c === k) && vibeOk(p)).length;
   });
-  const vis = D.filter(visible);
-  $('#list').innerHTML = Object.keys(CAT).filter(c => cat === 'all' || c === cat).map(c => {
-    const items = vis.filter(p => p.c === c);
-    if (!items.length) return '';
-    return `<section class="group"><h3 style="--c:${CAT[c][1]}">${icon(c)}${CAT[c][0]}<small>${items.length}</small></h3><div class="items">${items.map(p => `
-      <button class="item" type="button" data-open="${p.id}">
-        <span class="thumb" style="--c:${CAT[p.c][1]}">${thumb(p)}</span>
-        <span><span class="item-name">${p.n}</span><span class="item-meta">${REG[p.r][0]} · <span class="t">${p.t}</span></span><span class="item-desc">${p.d}</span></span>
-        ${saved.has(p.id) ? '<span class="item-star" aria-label="Salvo">★</span>' : ''}
-      </button>`).join('')}</div></section>`;
-  }).join('') || `<p class="empty">${vibe === 'salvos' ? 'Nada salvo ainda. Abra um lugar e toque em Salvar (fica guardado só neste aparelho).' : 'Nenhum lugar com esse filtro.'}</p>`;
+  $('[data-vibe="salvos"]').textContent = '★ Salvos' + (saved.size ? ' ' + saved.size : '');
+  let total = 0;
+  document.querySelectorAll('.group').forEach(g => {
+    let n = 0;
+    g.querySelectorAll('.item').forEach(it => {
+      const ok = visible(byId[it.dataset.id]);
+      it.hidden = !ok;
+      it.querySelector('.item-star').hidden = !saved.has(it.dataset.id);
+      if (ok) n++;
+    });
+    g.hidden = !n;
+    g.querySelector('h3 small').textContent = n;
+    total += n;
+  });
+  const st = $('#status');
+  st.hidden = cat === 'all' && !vibe;
+  st.innerHTML = `<span><b>${total}</b> ${total === 1 ? 'lugar' : 'lugares'}${cat !== 'all' ? ' em ' + CAT[cat][0] : ''}${vibe ? ' · ' + (vibe === 'salvos' ? 'salvos' : TAGS[vibe]) : ''}</span><button class="lnk" type="button" data-clear>Limpar filtros</button>`;
+  const em = $('#empty');
+  em.hidden = total > 0;
+  em.textContent = vibe === 'salvos' ? 'Nada salvo ainda. Abra um lugar e toque em Salvar (fica guardado só neste aparelho).' : 'Nenhum lugar com esse filtro.';
 }
 
 function pos(lat, lon) {
@@ -741,9 +774,16 @@ function renderMap() {
   $('#map').setAttribute('viewBox', `${vx} ${vy} ${vw} ${vh}`);
   $('#stage').style.setProperty('--vw', vw);
   $('#stage').style.setProperty('--vh', vh);
-  document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === view));
-  const cnt = {};
-  D.filter(visible).forEach(p => { cnt[p.r] = (cnt[p.r] || 0) + 1; });
+  document.querySelectorAll('.seg [data-view]').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === view));
+  const vis = D.filter(visible), cnt = {};
+  vis.forEach(p => { cnt[p.r] = (cnt[p.r] || 0) + 1; });
+  const north = vis.filter(p => REG[p.r][4] === 'n').length;
+  $('#cn').textContent = north;
+  $('#ci').textContent = vis.length;
+  const me = $('#mapempty');
+  me.hidden = view === 'n' ? north > 0 : vis.length > 0;
+  me.innerHTML = !vis.length ? 'Nenhum lugar com esse filtro.<button class="btn" type="button" data-clear>Limpar filtros</button>'
+    : `Nada no Norte com esse filtro.<button class="btn" type="button" data-view="i">Ver a ilha toda (${vis.length})</button>`;
   let h = '';
   for (const [id, [name, lat, lon, , zone, , short]] of Object.entries(REG)) {
     if (zone === 'x' || (view === 'n') !== (zone === 'n')) continue;
@@ -782,6 +822,16 @@ function openBalloon(el) {
   el.setAttribute('aria-expanded', 'true');
   const fr = $('#frame').getBoundingClientRect(), pr = (el.querySelector('b') || el).getBoundingClientRect();
   const px = pr.left + pr.width / 2 - fr.left, py = pr.top + pr.height / 2 - fr.top;
+  const dock = fr.width < 560;
+  balloon.classList.toggle('dock', dock);
+  if (dock) {
+    balloon.style.left = balloon.style.top = '';
+    balloon.style.setProperty('--tx', Math.min(Math.max(px, 18), fr.width - 18) + 'px');
+    balloon.classList.add('down');
+    balloon.classList.remove('up');
+    balloon.scrollIntoView({ block: 'nearest' });
+    return;
+  }
   const bw = balloon.offsetWidth, bh = balloon.offsetHeight;
   const left = Math.min(Math.max(px - bw / 2, 8), fr.width - bw - 8);
   const down = py < fr.height / 2;
@@ -794,8 +844,10 @@ function openBalloon(el) {
 
 // ficha
 const sheet = $('#sheet');
+let lastFocus = null;
 function openSheet(id) {
-  const p = byId[id], col = CAT[p.c][1];
+  const p = byId[id], col = CAT[p.c][1], a = document.activeElement;
+  lastFocus = a && a.closest('#balloon') ? anchor : a;
   sheet.innerHTML = `<form method="dialog"><button class="sh-close" aria-label="Fechar">×</button></form>
     ${p.p ? `<img class="sh-img" src="img/${p.p}.jpg" alt="Foto de ${p.n}">` : `<div class="sh-band" style="--c:${col}">${icon(p.c)}</div>`}
     <div class="sh-body">
@@ -818,8 +870,7 @@ function openSheet(id) {
 function locate(id) {
   const rid = byId[id].r, zone = REG[rid][4];
   sheet.close();
-  cat = 'all'; vibe = null;
-  syncFilters();
+  if (!visible(byId[id])) { cat = 'all'; vibe = null; syncFilters(); }
   if (zone !== 'x') view = zone;
   renderMap();
   $('.map-card').scrollIntoView({ block: 'center' });
@@ -862,9 +913,12 @@ document.addEventListener('click', e => {
   const pin = t.closest('.pin, .bomb');
   if (pin) {
     if (pin.dataset.zone) { view = 'n'; closeBalloon(); return renderMap(); }
-    return openBalloon(pin);
+    openBalloon(pin);
+    if (!balloon.hidden && e.detail === 0) (balloon.querySelector('li button') || balloon.querySelector('.bl-x')).focus();
+    return;
   }
-  if (t.closest('.bl-x')) return closeBalloon();
+  if (t.closest('.bl-x')) { const a = anchor; closeBalloon(); return a && a.focus(); }
+  if (t.closest('[data-clear]')) { cat = 'all'; vibe = null; closeBalloon(); syncFilters(); return renderMap(); }
   const v = t.closest('[data-view]');
   if (v) { view = v.dataset.view; closeBalloon(); return renderMap(); }
   const tab = t.closest('[data-cat]');
@@ -887,9 +941,12 @@ document.addEventListener('click', e => {
   if (anchor && !t.closest('#balloon')) closeBalloon();
 });
 sheet.addEventListener('click', e => { if (e.target === sheet) sheet.close(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && anchor) closeBalloon(); });
+// ao fechar a ficha, o foco volta pra quem abriu (o pin, se veio do balao)
+sheet.addEventListener('close', () => { if (lastFocus && document.contains(lastFocus)) lastFocus.focus({ preventScroll: true }); lastFocus = null; });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && anchor) { const a = anchor; closeBalloon(); a.focus(); } });
 addEventListener('resize', () => { if (anchor) closeBalloon(); });
 
+buildList();
 renderList();
 renderMap();
 renderAgenda();
